@@ -38,6 +38,12 @@ npm audit --audit-level=low
 
 `npm run check` führt TypeScript, ESLint und den Produktions-Build nacheinander aus.
 
+## Indexierungsfreigabe
+
+Die Indexierung ist bewusst opt-in. Preview- und Staging-Deployments müssen `SITE_INDEXING_ENABLED=false` verwenden und liefern damit Meta-Robots, `robots.txt` und `X-Robots-Tag` als Sperre aus. Erst beim verifizierten Domainwechsel auf `https://www.kinemo.de` darf die Variable in der Production-Umgebung auf `true` gesetzt werden. Danach müssen Startseite, `robots.txt`, Sitemap und eine Unterseite extern kontrolliert werden.
+
+Weitere Stadtseiten außer Wuppertal bleiben zusätzlich mit `REGIONAL_CONTENT_APPROVED=false` außerhalb von Index und Sitemap, bis ihr individueller regionaler Inhalt bestätigt wurde. Clarity-Conversion-Events werden ausschließlich nach erteilter Analyse-Einwilligung ausgelöst.
+
 ## CI/CD
 
 GitHub Actions prüft Pull Requests und Pushes auf `main` mit Node.js 22:

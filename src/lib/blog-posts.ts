@@ -16,8 +16,7 @@ export const blogPosts: BlogPost[] = [
       "Industrielle CT macht das Innere von Bauteilen sichtbar, zerstörungsfrei, präzise und in 3D. Wir erklären, wie das Verfahren funktioniert und wann es sich lohnt.",
     date: "2026-03-15",
     tags: ["Industrielle CT", "Technologie"],
-    image:
-      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&h=630&fit=crop",
+    image: "/opengraph-image",
     content: `
       <p>Industrielle Computertomographie (CT) ist eines der leistungsfähigsten Verfahren der zerstörungsfreien Werkstoffprüfung. Das Prinzip ist ähnlich wie bei der medizinischen CT: Ein Bauteil wird aus vielen Winkeln geröntgt, und aus den resultierenden Projektionen rekonstruiert ein Computer ein vollständiges dreidimensionales Volumenmodell.</p>
 
@@ -44,21 +43,20 @@ export const blogPosts: BlogPost[] = [
     slug: "fehler-entwicklungsphase-kosten",
     title: "Warum Fehler in der Entwicklungsphase am teuersten werden",
     excerpt:
-      "Je später ein Fehler erkannt wird, desto höher die Kosten. Wir zeigen anhand konkreter Zahlen, warum frühe Prüfung die wirtschaftlichste Entscheidung ist.",
+      "Je später ein Fehler erkannt wird, desto mehr Bereiche des Entwicklungs- und Produktionsprozesses können betroffen sein. Der Beitrag ordnet die wirtschaftlichen Zusammenhänge ohne pauschale Kostenversprechen ein.",
     date: "2026-02-28",
     tags: ["Produktentwicklung", "Qualität"],
-    image:
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=630&fit=crop",
+    image: "/opengraph-image",
     content: `
       <p>Es ist eine der ältesten Erkenntnisse im Qualitätsmanagement und eine der am häufigsten ignorierten: Fehler, die früh erkannt werden, kosten wenig. Fehler, die spät auffallen, kosten ein Vielfaches. Aber was genau bedeutet das in der Praxis?</p>
 
-      <h2>Die Zehnerregel der Fehlerkosten</h2>
-      <p>Die sogenannte Regel der Zehn besagt: Für jede Phase, die ein Fehler im Entwicklungs- und Produktionsprozess weiter voranschreitet, verzehnfachen sich die Kosten für seine Behebung.</p>
+      <h2>Warum spätere Fehlerkorrekturen aufwendiger werden können</h2>
+      <p>Je später eine Abweichung erkannt wird, desto mehr bereits abgeschlossene Arbeitsschritte, Werkzeuge, Bauteile oder Lieferbeziehungen können betroffen sein. Die tatsächlichen Kosten hängen jedoch vom Produkt, Prozess, Fehlerbild und Zeitpunkt ab und lassen sich nicht pauschal mit einem festen Faktor angeben.</p>
       <ul>
-        <li><strong>Fehler in der Konstruktionsphase:</strong> Kosten 1x</li>
-        <li><strong>Fehler in der Prototypenphase:</strong> Kosten 10x</li>
-        <li><strong>Fehler in der Serienproduktion:</strong> Kosten 100x</li>
-        <li><strong>Fehler im Feld (Rückruf):</strong> Kosten 1.000x</li>
+        <li><strong>Konstruktionsphase:</strong> Änderungen können häufig noch vor Werkzeug- oder Serienentscheidungen bewertet werden.</li>
+        <li><strong>Prototypenphase:</strong> Bereits gefertigte Varianten und Entwicklungszeit müssen berücksichtigt werden.</li>
+        <li><strong>Serienproduktion:</strong> Bestände, Prozessanpassungen und Liefertermine können betroffen sein.</li>
+        <li><strong>Feldeinsatz:</strong> Zusätzlich können Diagnose, Austausch, Kommunikation und Gewährleistung relevant werden.</li>
       </ul>
 
       <h2>Warum bleiben Fehler so lange unentdeckt?</h2>
@@ -77,8 +75,7 @@ export const blogPosts: BlogPost[] = [
       "Lunker und Porositäten in Aluminiumgussteilen sind von außen nicht sichtbar, aber mit CT klar erkennbar. Was Sie darüber wissen sollten.",
     date: "2026-02-10",
     tags: ["Fehleranalyse", "Guss", "Lunker"],
-    image:
-      "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1200&h=630&fit=crop",
+    image: "/opengraph-image",
     content: `
       <p>Lunker sind innere Hohlräume, die beim Erstarren von Schmelzen entstehen. Sie sind in Aluminium-, Zink- und Stahlgussteilen weit verbreitet und von außen nicht erkennbar. Trotzdem können sie erhebliche Auswirkungen auf Festigkeit, Dichtigkeit und Lebensdauer eines Bauteils haben.</p>
 
@@ -94,7 +91,7 @@ export const blogPosts: BlogPost[] = [
       </ul>
 
       <h2>Wie werden Lunker mit CT erkannt?</h2>
-      <p>Industrielle CT liefert ein vollständiges 3D-Bild des Gussteils, inklusive aller inneren Hohlräume. Lunker werden automatisch detektiert, nach Größe und Position klassifiziert und in einem Analysebericht dokumentiert.</p>
+      <p>Industrielle CT rekonstruiert ein dreidimensionales Volumen des Gussteils. Ausreichend erkennbare Hohlräume können darin segmentiert, nach vereinbarten Merkmalen ausgewertet und mit ihrer Lage dokumentiert werden. Das Ergebnis hängt von Aufnahmequalität, Auswerteparametern und Bauteilgeometrie ab.</p>
 
       <h2>Wann sollte man analysieren?</h2>
       <p>Die sinnvollste Investition ist eine CT-Analyse beim ersten Prototypen oder Erstmuster, also bevor ein Prozess finalisiert oder eine Serienfreigabe erteilt wird. Das gibt Zeit für Anpassungen ohne zeitkritischen Druck.</p>
@@ -107,8 +104,7 @@ export const blogPosts: BlogPost[] = [
       "CT und Röntgen haben unterschiedliche Stärken. Dieser Beitrag hilft Ihnen zu entscheiden, welches Verfahren für Ihre Prüfaufgabe das richtige ist.",
     date: "2026-01-20",
     tags: ["CT", "Röntgen", "Verfahrensvergleich"],
-    image:
-      "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&h=630&fit=crop",
+    image: "/opengraph-image",
     content: `
       <p>Beide Verfahren, industrielle Computertomographie und klassisches 2D-Röntgen, nutzen Röntgenstrahlen zur Prüfung von Bauteilen. Aber sie unterscheiden sich erheblich in dem, was sie leisten können. Die Wahl des richtigen Verfahrens hängt von der konkreten Prüfaufgabe ab.</p>
 

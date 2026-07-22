@@ -26,13 +26,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         createBreadcrumbNode([{ name: "Startseite", path: "/" }, { name: "Suche", path: "/suche" }], "/suche"),
       ])} />
       <PageHero eyebrow="Website-Suche" title="Fachwissen und Prüfleistungen gezielt finden." description="Suchen Sie nach Verfahren, Fehlerbildern, Werkstoffen, Branchen oder einer Region." code="SEARCH / KINEMO" />
-      <section className="px-6 py-16 md:py-24">
+      <section className="px-4 py-14 sm:px-6 sm:py-16 md:py-24">
         <div className="mx-auto max-w-5xl">
-          <form action="/suche" role="search" className="relative">
+          <form action="/suche" role="search" className="grid gap-3 sm:relative sm:block">
             <label htmlFor="site-search" className="sr-only">Website durchsuchen</label>
-            <Search aria-hidden="true" className="absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-            <input id="site-search" name="q" type="search" defaultValue={query} placeholder="Zum Beispiel: Porosität Aluminiumguss" className="min-h-14 w-full border border-gray-300 bg-white py-4 pl-14 pr-32 text-base text-gray-900 outline-none focus:border-[#50C9E1] dark:border-white/15 dark:bg-[#0f2b3b] dark:text-white" />
-            <button type="submit" className="absolute bottom-1.5 right-1.5 top-1.5 bg-[#50C9E1] px-5 font-semibold text-[#08415C]">Suchen</button>
+            <Search aria-hidden="true" className="pointer-events-none absolute left-5 top-7 h-5 w-5 -translate-y-1/2 text-gray-400 sm:top-1/2" />
+            <input id="site-search" name="q" type="search" defaultValue={query} placeholder="Zum Beispiel: Porosität Aluminiumguss" className="min-h-14 w-full border border-gray-300 bg-white py-4 pl-14 pr-4 text-base text-gray-900 outline-none focus:border-[#50C9E1] dark:border-white/15 dark:bg-[#0f2b3b] dark:text-white sm:pr-32" />
+            <button type="submit" className="min-h-12 bg-[#50C9E1] px-5 font-semibold text-[#08415C] sm:absolute sm:bottom-1.5 sm:right-1.5 sm:top-1.5 sm:min-h-0">Suchen</button>
           </form>
 
           {query && (

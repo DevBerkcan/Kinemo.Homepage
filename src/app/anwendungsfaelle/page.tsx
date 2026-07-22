@@ -19,7 +19,7 @@ const useCases = [
     problem:
       "In Gussbauteilen aus Aluminium, Zink oder Stahl entstehen während des Erstarrungsprozesses Hohlräume (Lunker) und Porositätsnester. Diese sind von außen unsichtbar, reduzieren jedoch die mechanische Festigkeit erheblich.",
     analysis:
-      "Die industrielle CT erzeugt eine vollständige 3D-Darstellung des Bauteils. Lunker und Poren werden automatisch detektiert, visualisiert und in ihrer Größe und Lage dokumentiert.",
+      "Die industrielle CT erzeugt ein dreidimensionales Volumen des Bauteils. Lunker und Poren können darin segmentiert, visualisiert und hinsichtlich Größe und Lage ausgewertet werden.",
     insight:
       "Entwicklungs- und Qualitätsteams erhalten klare Aussagen über Lage, Größe und Häufigkeit der Fehlstellen – als Grundlage für Prozessoptimierungen oder Konstruktionsanpassungen.",
     keywords: ["Lunkeranalyse", "Porositätsprüfung", "Gussqualität", "Aluminiumbauteile"],

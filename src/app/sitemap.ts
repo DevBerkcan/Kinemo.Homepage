@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next"
 import { blogPosts } from "@/lib/blog-posts"
+import { isRegionalContentApproved } from "@/lib/deployment"
 import { SITE_URL } from "@/lib/seo"
 import { regionalPages } from "@/lib/geo-content"
+import { servicePages } from "@/lib/service-pages"
 
 const staticRoutes: Array<{
   path: string
@@ -35,12 +37,9 @@ const staticRoutes: Array<{
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const today = new Date()
-
   return [
     ...staticRoutes.map((route) => ({
       url: new URL(route.path, SITE_URL).toString(),
-      lastModified: today,
       changeFrequency: route.changeFrequency,
       priority: route.priority,
     })),
@@ -50,9 +49,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.72,
     })),
-    ...regionalPages.map((region) => ({
+    ...servicePages.map((service) => ({
+      url: new URL(`/leistungen/${service.slug}`, SITE_URL).toString(),
+      changeFrequency: "monthly" as const,
+      priority: 0.82,
+    })),
+    ...regionalPages.filter((region) => region.slug === "wuppertal" || isRegionalContentApproved).map((region) => ({
       url: new URL(`/industrielle-ct/${region.slug}`, SITE_URL).toString(),
-      lastModified: today,
       changeFrequency: "monthly" as const,
       priority: region.slug === "wuppertal" ? 0.82 : 0.7,
     })),

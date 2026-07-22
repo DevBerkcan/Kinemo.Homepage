@@ -4,7 +4,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import PageCta from "@/app/components/PageCta"
 import { blogPostMap, blogPosts } from "@/lib/blog-posts"
-import { SITE_URL, createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
+import { SITE_URL, absoluteUrl, createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 import { entityIds } from "@/lib/schema"
 
 type BlogPostPageProps = {
@@ -25,11 +25,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   return createPageMetadata({
-    title: `${post.title} | Kinemo Blog`,
+    title: `${post.title} – Fachbeitrag`,
     description: post.excerpt,
     path: `/blog/${slug}`,
     keywords: post.tags,
-    image: post.image,
+    image: absoluteUrl(post.image),
   })
 }
 
@@ -83,6 +83,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
               {post.tags.map((tag) => (
                 <span key={tag} className="border border-[#50C9E1]/25 px-2 py-1 text-xs font-medium text-[#50C9E1]">#{tag}</span>
               ))}
+              <span className="text-sm text-white/55">Herausgegeben von Kinemo GmbH</span>
             </div>
             <h1 className="mt-5 text-4xl font-bold leading-tight tracking-[-0.04em] md:text-5xl">{post.title}</h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60">{post.excerpt}</p>

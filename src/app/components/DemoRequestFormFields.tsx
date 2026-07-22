@@ -1,13 +1,15 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
 import { submitInquiry } from "@/lib/inquiry"
+import { trackAnalyticsEvent } from "@/lib/analytics"
 
 const fieldClassName = "min-h-12 w-full border-b border-white/25 bg-transparent px-0 py-3 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#50C9E1]"
 
 export default function DemoRequestFormFields() {
+  const hasStarted = useRef(false)
   const [submitted, setSubmitted] = useState(false)
   const [privacy, setPrivacy] = useState(false)
   const [privacyError, setPrivacyError] = useState(false)
@@ -39,6 +41,7 @@ export default function DemoRequestFormFields() {
     setLoading(true)
     try {
       await submitInquiry(data)
+      trackAnalyticsEvent("contact_form_submit")
       setSubmitted(true)
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.")
@@ -58,7 +61,15 @@ export default function DemoRequestFormFields() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-7">
+    <form
+      onSubmit={handleSubmit}
+      onFocusCapture={() => {
+        if (hasStarted.current) return
+        hasStarted.current = true
+        trackAnalyticsEvent("contact_form_start")
+      }}
+      className="space-y-7"
+    >
       <div className="grid gap-7 md:grid-cols-2">
         <div>
           <label htmlFor="demo-name" className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-white/55">Name *</label>

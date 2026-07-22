@@ -2,12 +2,12 @@ import Link from "next/link"
 import { ArrowRight, FileText, FlaskConical, GitCompare, Radio, Scan, SearchX } from "lucide-react"
 
 const services = [
-  { icon: Scan, title: "CT-Analyse", subtitle: "Industrielle Computertomographie", description: "Dreidimensionale Darstellung innerer Strukturen – für Bauteile und Baugruppen jeder Komplexität.", href: "/ct-aluminiumguss" },
-  { icon: Radio, title: "Röntgenprüfung", subtitle: "2D-Röntgenanalyse", description: "Schnelle, präzise Durchleuchtung zur Erkennung von Fehlern, Fremdkörpern und Strukturdefekten.", href: "/bga-loetstellenpruefung" },
-  { icon: SearchX, title: "Fehleranalyse", subtitle: "Schaden- und Ursachenanalyse", description: "Systematische Analyse von Schäden, Brüchen und Materialfehlern mit nachvollziehbarer Dokumentation.", href: "/porositaetsanalyse" },
-  { icon: FlaskConical, title: "Entwicklungsbegleitung", subtitle: "Prüfungen in F&E-Phasen", description: "Von der ersten Idee bis zur Serienreife – Kinemo begleitet den Entwicklungsprozess mit belastbaren Analysedaten.", href: "/erstmusterpruefung-ct" },
-  { icon: GitCompare, title: "Vergleichsanalysen", subtitle: "Soll-/Ist-Vergleiche", description: "Abweichungen zwischen Konstruktionsdaten und realen Bauteilen präzise messen und dokumentieren." },
-  { icon: FileText, title: "Dokumentation & Auswertung", subtitle: "Visuelle Berichte", description: "Strukturierte Analyseberichte mit annotierten Bildern, 3D-Rekonstruktionen und Handlungsempfehlungen." },
+  { icon: Scan, title: "CT-Analyse", subtitle: "Industrielle Computertomographie", description: "Dreidimensionale Darstellung innerer Strukturen für geeignete Bauteile und Baugruppen.", href: "/leistungen/industrielle-computertomographie" },
+  { icon: Radio, title: "Röntgenprüfung", subtitle: "2D-Röntgenanalyse", description: "Projektionsaufnahmen zur Untersuchung verdeckter Strukturen und definierter Prüfmerkmale.", href: "/leistungen/industrielle-roentgenpruefung" },
+  { icon: SearchX, title: "Fehleranalyse", subtitle: "Schaden- und Ursachenanalyse", description: "Innere Befunde dokumentieren und gemeinsam mit Prozess- und Schadensinformationen einordnen.", href: "/leistungen/fehleranalyse" },
+  { icon: FlaskConical, title: "Entwicklungsbegleitung", subtitle: "Prüfungen in F&E-Phasen", description: "Prototypen, Varianten und Vorserienteile anhand definierter Prüfmerkmale vergleichen.", href: "/leistungen/entwicklungsbegleitende-pruefung" },
+  { icon: GitCompare, title: "Vergleichsanalysen", subtitle: "Soll-/Ist-Vergleiche", description: "Rekonstruierte Geometrien mit CAD- oder Referenzdaten abgleichen und dokumentieren.", href: "/leistungen/soll-ist-vergleich" },
+  { icon: FileText, title: "Dokumentation & Auswertung", subtitle: "Technische Berichte", description: "Relevante Bilder, Befunde und vereinbarte Auswertungen nachvollziehbar zusammenführen.", href: "/leistungen/dokumentation-auswertung" },
 ]
 
 export default function ServicesPreview() {

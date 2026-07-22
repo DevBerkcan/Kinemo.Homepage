@@ -5,6 +5,7 @@ import {
   COMPANY_EMAIL,
   COMPANY_PHONE,
 } from "@/lib/site"
+import { isIndexingEnabled } from "@/lib/deployment"
 
 export const SITE_URL = "https://www.kinemo.de"
 export const BRAND_NAME = COMPANY_BRAND
@@ -50,6 +51,7 @@ export function createPageMetadata({
   noindex = false,
 }: PageMetadataInput): Metadata {
   const canonical = absoluteUrl(path)
+  const shouldNoIndex = noindex || !isIndexingEnabled
 
   return {
     title,
@@ -84,11 +86,11 @@ export function createPageMetadata({
       images: [image],
     },
     robots: {
-      index: !noindex,
-      follow: !noindex,
+      index: !shouldNoIndex,
+      follow: !shouldNoIndex,
       googleBot: {
-        index: !noindex,
-        follow: !noindex,
+        index: !shouldNoIndex,
+        follow: !shouldNoIndex,
         "max-image-preview": "large",
         "max-snippet": -1,
         "max-video-preview": -1,

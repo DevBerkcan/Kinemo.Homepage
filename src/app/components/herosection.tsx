@@ -30,7 +30,7 @@ function XRayVisual() {
           {[0, 1, 2].map((ring) => (
             <div
               key={ring}
-              className="absolute rounded-full border-2 border-[#50C9E1]/25 animate-spin"
+            className="absolute animate-spin rounded-full border-2 border-[#50C9E1]/25 max-md:animate-none motion-reduce:animate-none"
               style={{
                 width: 150 + ring * 48,
                 height: 150 + ring * 48,
@@ -38,8 +38,8 @@ function XRayVisual() {
               }}
             />
           ))}
-          <div className="relative z-10 rounded-full bg-[#50C9E1]/10 p-8 animate-pulse">
-            <Scan size={96} className="text-[#50C9E1]" aria-hidden="true" />
+          <div className="relative z-10 animate-pulse rounded-full bg-[#50C9E1]/10 p-6 max-md:animate-none sm:p-8 motion-reduce:animate-none">
+            <Scan className="h-16 w-16 text-[#50C9E1] sm:h-24 sm:w-24" aria-hidden="true" />
           </div>
         </div>
       </div>
@@ -68,15 +68,15 @@ export default function Hero() {
   const metricsApproved = process.env.KINEMO_METRICS_APPROVED === "true"
 
   return (
-    <section data-motion-hero className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#08415C] via-[#0C5374] to-[#05151f] text-white">
+    <section data-motion-hero className="relative min-h-[100svh] overflow-hidden bg-gradient-to-br from-[#08415C] via-[#0C5374] to-[#05151f] text-white supports-[height:100dvh]:min-h-[100dvh]">
       <div className="absolute inset-0 opacity-20" aria-hidden="true">
         <div className="h-full w-full bg-[url('/grid-pattern.svg')] bg-repeat" />
       </div>
 
-      <div className="container relative z-10 mx-auto flex min-h-screen flex-col items-center px-5 py-14 sm:px-6 md:flex-row md:py-16">
-        <div className="min-w-0 w-full text-center md:w-1/2 md:text-left">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center px-4 pb-20 pt-12 sm:px-6 sm:pt-14 lg:flex-row lg:py-16 supports-[height:100dvh]:min-h-[100dvh]">
+        <div className="min-w-0 w-full text-center lg:w-1/2 lg:text-left">
           {metricsApproved ? (
-            <div data-hero-reveal className="mb-6 flex flex-wrap items-center justify-center gap-2 md:justify-start">
+            <div data-hero-reveal className="mb-5 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
               <div className="flex items-center gap-1" aria-label="Fünf Sterne">
                 {Array.from({ length: 5 }, (_, index) => (
                   <Star key={index} size={16} className="fill-current text-yellow-400" aria-hidden="true" />
@@ -90,22 +90,22 @@ export default function Hero() {
             </p>
           )}
 
-          <div data-hero-reveal className="mb-6 flex flex-wrap items-center justify-center gap-2 md:justify-start">
+          <div data-hero-reveal className="mb-5 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
             <Scan size={24} className="text-[#50C9E1]" aria-hidden="true" />
-            <span className="text-sm font-semibold uppercase tracking-widest text-[#50C9E1]">
+            <span className="max-w-xl text-xs font-semibold uppercase tracking-[0.14em] text-[#50C9E1] sm:text-sm sm:tracking-widest">
               Industrielle CT &amp; Röntgenanalyse für die Produktentwicklung
             </span>
           </div>
 
-          <h1 data-hero-reveal className="mb-6 break-words text-4xl font-bold leading-[1.06] sm:text-5xl md:text-6xl">
+          <h1 data-hero-reveal className="mb-6 text-[clamp(2rem,9vw,3.75rem)] font-bold leading-[1.06] [overflow-wrap:anywhere]">
             <span className="block">Verborgene Produktfehler</span>
             <span className="block"><span className="text-[#50C9E1]">sichtbar machen</span> –</span>
-            <span className="mt-1 block text-3xl font-semibold text-gray-200 sm:text-4xl md:text-5xl">
+            <span className="mt-1 block text-[clamp(1.75rem,7.5vw,3rem)] font-semibold text-gray-200">
               bevor sie Zeit und Geld kosten.
             </span>
           </h1>
 
-          <p data-hero-reveal className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-gray-200 sm:text-lg md:mx-0">
+          <p data-hero-reveal className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-gray-200 sm:text-lg lg:mx-0">
             Mit industrieller Röntgentechnologie und CT-Analysen unterstützt Kinemo Entwicklungs- und Qualitätsteams dabei,
             <span className="font-medium text-[#50C9E1]"> innere Strukturen, Schwachstellen und Fehler frühzeitig zu erkennen</span>.
           </p>
@@ -119,18 +119,18 @@ export default function Hero() {
             ))}
           </ul>
 
-          <div data-hero-reveal className="mb-8 flex flex-col justify-center gap-4 sm:flex-row md:justify-start">
-            <Link href="/kontakt" className="group inline-flex items-center justify-center rounded-full bg-[#50C9E1] px-8 py-4 font-semibold text-[#08415C] shadow-lg transition hover:scale-105 hover:bg-[#7DDBF3] hover:shadow-xl">
+          <div data-hero-reveal className="mb-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
+            <Link href="/kontakt" className="group inline-flex min-h-12 items-center justify-center rounded-full bg-[#50C9E1] px-6 py-3.5 text-center font-semibold text-[#08415C] shadow-lg transition hover:scale-105 hover:bg-[#7DDBF3] hover:shadow-xl sm:px-8 sm:py-4">
               Jetzt Analyse anfragen
               <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
             </Link>
-            <Link href="/anwendungsfaelle" className="inline-flex items-center justify-center rounded-full border-2 border-white/30 bg-transparent px-8 py-4 text-white transition hover:border-[#50C9E1] hover:bg-[#50C9E1]/10">
+            <Link href="/anwendungsfaelle" className="inline-flex min-h-12 items-center justify-center rounded-full border-2 border-white/30 bg-transparent px-6 py-3.5 text-center text-white transition hover:border-[#50C9E1] hover:bg-[#50C9E1]/10 sm:px-8 sm:py-4">
               <Play size={18} className="mr-2" />
               Anwendungsfälle ansehen
             </Link>
           </div>
 
-          <div data-hero-reveal className="flex flex-wrap justify-center gap-3 md:justify-start">
+          <div data-hero-reveal className="flex flex-wrap justify-center gap-2 sm:gap-3 lg:justify-start">
             {applications.map((application) => (
               <span key={application} className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium backdrop-blur-sm">
                 {application}
@@ -139,7 +139,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div data-hero-visual className="relative mt-12 h-[50vh] min-w-0 w-full sm:h-[60vh] md:mt-0 md:h-[80vh] md:w-1/2">
+        <div data-hero-visual className="relative mt-12 h-[min(28rem,65svh)] min-w-0 w-full sm:h-[min(34rem,65svh)] lg:mt-0 lg:h-[min(52rem,80svh)] lg:w-1/2">
           <XRayVisual />
           <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-xl backdrop-blur-md md:-bottom-6 md:-left-6 md:right-auto md:w-72">
             <dl className="space-y-2 text-xs font-mono sm:text-sm">
@@ -151,9 +151,9 @@ export default function Hero() {
         </div>
       </div>
 
-      <a href="#benefits" className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-1 text-xs text-gray-300 transition hover:text-[#50C9E1]">
+      <a href="#benefits" className="absolute bottom-5 left-1/2 z-20 hidden min-h-11 -translate-x-1/2 flex-col items-center justify-center gap-1 text-xs text-gray-300 transition hover:text-[#50C9E1] sm:flex">
         Mehr erfahren
-        <ChevronDown size={24} className="animate-bounce text-[#50C9E1]" />
+        <ChevronDown size={24} className="animate-bounce text-[#50C9E1] max-md:animate-none motion-reduce:animate-none" />
       </a>
     </section>
   )

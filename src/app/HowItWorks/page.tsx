@@ -25,9 +25,16 @@ export default function HowItWorks() {
         </div>
 
         <div className="max-w-6xl mx-auto text-center mb-12 md:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold text-[#08415C] dark:text-white mb-4">
+          <nav aria-label="Breadcrumb" className="mb-6">
+            <ol className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-500 dark:text-white/55">
+              <li><Link href="/" className="transition-colors hover:text-[#1f9cb1] dark:hover:text-[#50C9E1]">Startseite</Link></li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" className="text-gray-700 dark:text-white/80">Ablauf</li>
+            </ol>
+          </nav>
+          <h1 className="text-3xl sm:text-4xl md:text-4xl font-bold text-[#08415C] dark:text-white mb-4">
             Wie Kinemo Ihre Produktentwicklung unterstützt
-          </h2>
+          </h1>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-sm md:text-base">
             Entdecken Sie, wie industrielle CT- und Röntgenanalyse verborgene Fehler sichtbar macht und damit Entwicklungsschleifen verkürzt.
           </p>
@@ -41,9 +48,9 @@ export default function HowItWorks() {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <h3 className="text-xl font-bold text-[#08415C] dark:text-white mb-6 text-center">
+          <h2 className="text-xl font-bold text-[#08415C] dark:text-white mb-6 text-center">
             Ablauf der Zusammenarbeit
-          </h3>
+          </h2>
           <ol className="space-y-6 pl-5 list-decimal text-gray-700 dark:text-gray-300 text-sm md:text-base">
             <li><strong>📞 Erstgespräch & Zieldefinition:</strong> Wir besprechen Ihre Anforderungen und definieren gemeinsam die Analyseziele.</li>
             <li><strong>📦 Bauteilanlieferung:</strong> Sie senden uns das Bauteil oder Produkt zur Untersuchung.</li>

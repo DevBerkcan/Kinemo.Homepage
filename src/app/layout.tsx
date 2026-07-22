@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     template: "%s | Kinemo",
   },
   applicationName: "Kinemo",
+  manifest: "/manifest.webmanifest",
   referrer: "origin-when-cross-origin",
   authors: [{ name: "Kinemo" }],
   creator: "Kinemo",

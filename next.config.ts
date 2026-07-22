@@ -1,12 +1,13 @@
 import type { NextConfig } from "next";
 
 const isDevelopment = process.env.NODE_ENV === "development";
+const isIndexingEnabled = process.env.SITE_INDEXING_ENABLED === "true";
 
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""} https://www.clarity.ms`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://*.clarity.ms https://c.bing.com",
+  "img-src 'self' data: blob: https://*.clarity.ms https://c.bing.com",
   "font-src 'self' data:",
   "connect-src 'self' https://*.clarity.ms https://c.bing.com",
   "frame-src 'none'",
@@ -38,18 +39,18 @@ const securityHeaders = [
         },
       ]
     : []),
+  ...(!isIndexingEnabled
+    ? [
+        {
+          key: "X-Robots-Tag",
+          value: "noindex, nofollow, noarchive",
+        },
+      ]
+    : []),
 ];
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-    ],
-  },
   async headers() {
     return [
       {

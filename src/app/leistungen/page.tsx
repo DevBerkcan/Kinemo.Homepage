@@ -30,6 +30,7 @@ const services = [
       "Geeignet für Metall, Kunststoff, Verbundwerkstoffe und Elektronik",
     ],
     scenarios: "Prototypenprüfung, Vorserienvalidierung, Fehlerursachenanalyse, Fertigungsoptimierung",
+    href: "/leistungen/industrielle-computertomographie",
     color: "from-[#08415C] to-[#0C5374]",
   },
   {
@@ -45,6 +46,7 @@ const services = [
       "Kostengünstige Alternative zur CT bei geeigneten Aufgaben",
     ],
     scenarios: "Erstprüfung, Serienbegleitung, Eingangsinspektion, Schnellprüfung",
+    href: "/leistungen/industrielle-roentgenpruefung",
     color: "from-blue-600 to-cyan-600",
   },
   {
@@ -60,6 +62,7 @@ const services = [
       "Bewertung von Ausschuss und Rückläufern",
     ],
     scenarios: "Reklamationsbearbeitung, Prozessoptimierung, Qualitätssicherung, Entwicklungsschleifen",
+    href: "/leistungen/fehleranalyse",
     color: "from-orange-500 to-red-500",
   },
   {
@@ -75,6 +78,7 @@ const services = [
       "Unterstützung bei Freigabeentscheidungen",
     ],
     scenarios: "F&E-Begleitung, Prototypenphasen, Vorserienfreigabe, Konstruktionsoptimierung",
+    href: "/leistungen/entwicklungsbegleitende-pruefung",
     color: "from-green-500 to-emerald-600",
   },
   {
@@ -90,6 +94,7 @@ const services = [
       "Grundlage für Freigabeentscheidungen und Toleranzdefinitionen",
     ],
     scenarios: "Erstmusterprüfung, Serienüberwachung, Lieferantenbewertung",
+    href: "/leistungen/soll-ist-vergleich",
     color: "from-purple-500 to-violet-600",
   },
   {
@@ -105,6 +110,7 @@ const services = [
       "Geeignet für interne Freigaben und Lieferantenkommunikation",
     ],
     scenarios: "Interne QS-Dokumentation, Projektabschlussberichte, Lieferantenaudit",
+    href: "/leistungen/dokumentation-auswertung",
     color: "from-teal-500 to-cyan-500",
   },
 ]
@@ -130,28 +136,33 @@ export default function LeistungenPage() {
         />
 
         {/* Services */}
-        <section className="py-24 px-6">
-          <div className="max-w-7xl mx-auto space-y-16">
+        <section className="px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+          <div className="mx-auto max-w-7xl space-y-12 sm:space-y-16">
             {services.map((service, index) => {
               const Icon = service.icon
               return (
                 <div
                   key={service.title}
-                  className={`flex flex-col ${index % 2 === 1 ? "lg:flex-row-reverse" : "lg:flex-row"} gap-12 items-start`}
+                  className={`flex min-w-0 flex-col ${index % 2 === 1 ? "lg:flex-row-reverse" : "lg:flex-row"} items-stretch gap-8 lg:items-start lg:gap-12`}
                 >
                   <div className="lg:w-1/2">
                     <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6`}>
                       <Icon size={28} className="text-white" />
                     </div>
-                    <h2 className="text-3xl font-bold text-[#08415C] dark:text-white mb-2">{service.title}</h2>
+                    <h2 className="text-2xl font-bold text-[#08415C] dark:text-white mb-2 sm:text-3xl">
+                      <Link href={service.href} className="transition-colors hover:text-[#1f9cb1] dark:hover:text-[#50C9E1]">{service.title}</Link>
+                    </h2>
                     <p className="text-[#50C9E1] font-medium mb-4">{service.subtitle}</p>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">{service.description}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       <span className="font-semibold text-[#08415C] dark:text-white">Typische Einsatzszenarien:</span>{" "}
                       {service.scenarios}
                     </p>
+                    <Link href={service.href} className="mt-6 inline-flex min-h-11 items-center border-b border-[#1f9cb1] py-2 font-semibold text-[#08415C] dark:border-[#50C9E1] dark:text-[#50C9E1]">
+                      Leistung im Detail
+                    </Link>
                   </div>
-                  <div className="lg:w-1/2 bg-gray-50 dark:bg-[#0f2b3b] rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                  <div className="w-full rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-[#0f2b3b] sm:p-8 lg:w-1/2">
                     <h3 className="font-semibold text-[#08415C] dark:text-white mb-5">Was Sie erhalten:</h3>
                     <ul className="space-y-3">
                       {service.benefits.map((benefit, i) => (

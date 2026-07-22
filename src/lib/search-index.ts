@@ -1,5 +1,6 @@
 import { blogPosts } from "@/lib/blog-posts"
 import { faqCategories, regionalPages } from "@/lib/geo-content"
+import { servicePages } from "@/lib/service-pages"
 
 export type SearchDocument = {
   title: string
@@ -22,6 +23,7 @@ const coreDocuments: SearchDocument[] = [
 
 export const searchDocuments: SearchDocument[] = [
   ...coreDocuments,
+  ...servicePages.map((service) => ({ title: service.title, description: service.metaDescription, href: `/leistungen/${service.slug}`, type: "Leistung" as const, terms: `${service.name} ${service.shortName} ${service.suitableFor.join(" ")}` })),
   ...blogPosts.map((post) => ({ title: post.title, description: post.excerpt, href: `/blog/${post.slug}`, type: "Wissen" as const, terms: post.tags.join(" ") })),
   ...faqCategories.map((category) => ({ title: `FAQ: ${category.name}`, description: `${category.items.length} Antworten zu ${category.name}.`, href: `/faq#${category.slug}`, type: "FAQ" as const, terms: category.items.map((item) => `${item.question} ${item.answer}`).join(" ") })),
   ...regionalPages.map((region) => ({ title: `Industrielle CT für ${region.city}`, description: region.context, href: `/industrielle-ct/${region.slug}`, type: "Region" as const, terms: `${region.city} ${region.industries.join(" ")}` })),

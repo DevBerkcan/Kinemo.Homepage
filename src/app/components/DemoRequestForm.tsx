@@ -21,7 +21,7 @@ export default function DemoRequestForm() {
           <div className="mt-10 space-y-4 border-t border-white/15 pt-7 text-sm text-white/70">
             <div className="flex items-center gap-3">
               <Clock3 aria-hidden="true" className="h-5 w-5 text-[#50C9E1]" />
-              Persönliche Rückmeldung in der Regel innerhalb von 24 Stunden
+              Persönliche Rückmeldung nach Prüfung Ihrer Anfrage
             </div>
             <a href={COMPANY_EMAIL_HREF} className="group flex w-fit items-center gap-3 transition-colors hover:text-white">
               <Mail aria-hidden="true" className="h-5 w-5 text-[#50C9E1]" />

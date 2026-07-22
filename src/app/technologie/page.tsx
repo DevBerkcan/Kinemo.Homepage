@@ -33,8 +33,8 @@ const advantages = [
   },
   {
     icon: Microscope,
-    title: "Mikrometergenaue Auflösung",
-    description: "Moderne CT-Systeme erreichen Auflösungen im Mikrometerbereich – selbst feinste Risse oder Poren werden sichtbar.",
+    title: "Bauteilspezifische Detaildarstellung",
+    description: "Die erreichbare Detaildarstellung hängt unter anderem von Bauteilgröße, Material, Durchstrahlungsweg, Aufnahmegeometrie und Systemkonfiguration ab.",
   },
   {
     icon: GitCompare,
@@ -43,8 +43,8 @@ const advantages = [
   },
   {
     icon: ShieldCheck,
-    title: "Reproduzierbare Ergebnisse",
-    description: "Im Gegensatz zu Schliffbildern oder manuellen Prüfungen sind CT-Ergebnisse vollständig reproduzierbar und dokumentierbar.",
+    title: "Dokumentierbare Vergleichsdaten",
+    description: "Bei abgestimmter Prüfkonfiguration lassen sich CT-Datensätze und Auswertebereiche nachvollziehbar dokumentieren und für Variantenvergleiche nutzen.",
   },
   {
     icon: AlertTriangle,
@@ -118,8 +118,8 @@ export default function TechnologiePage() {
               Beide Verfahren haben ihre Stärken – je nach Prüfaufgabe ist das eine oder andere
               besser geeignet. Kinemo berät Sie, welches Verfahren für Ihre Anforderungen passt.
             </p>
-            <div className="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
-              <table className="w-full text-sm">
+            <div role="region" aria-label="Vergleich von industrieller CT und klassischem Röntgen" tabIndex={0} className="table-scroll-region rounded-2xl border border-gray-200 shadow-sm dark:border-gray-700">
+              <table className="w-full min-w-[42rem] text-sm">
                 <thead>
                   <tr className="bg-[#08415C] text-white">
                     <th className="text-left px-6 py-4 font-semibold">Kriterium</th>

@@ -1,22 +1,37 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Phone, Mail, MapPin, Clock, CheckCircle } from "lucide-react"
 import { createBreadcrumbJsonLd } from "@/lib/seo"
 import { COMPANY_ADDRESS_FULL, COMPANY_EMAIL, COMPANY_EMAIL_HREF, COMPANY_PHONE, COMPANY_PHONE_HREF } from "@/lib/site"
 import { submitInquiry } from "@/lib/inquiry"
+import { trackAnalyticsEvent } from "@/lib/analytics"
 import PageHero from "@/app/components/PageHero"
 
 export default function KontaktPage() {
+  const successCloseRef = useRef<HTMLButtonElement>(null)
+  const hasStarted = useRef(false)
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", message: "", privacy: false, website: "" })
   const [success, setSuccess] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => setSuccess(false), 5000)
-      return () => clearTimeout(timer)
+    if (!success) return
+
+    const previouslyFocused = document.activeElement as HTMLElement | null
+    const focusFrame = window.requestAnimationFrame(() => successCloseRef.current?.focus())
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSuccess(false)
+    }
+
+    document.body.style.overflow = "hidden"
+    document.addEventListener("keydown", handleKeyDown)
+    return () => {
+      window.cancelAnimationFrame(focusFrame)
+      document.body.style.overflow = ""
+      document.removeEventListener("keydown", handleKeyDown)
+      previouslyFocused?.focus()
     }
   }, [success])
 
@@ -50,6 +65,7 @@ export default function KontaktPage() {
     setLoading(true)
     try {
       await submitInquiry({ ...form, source: "kontakt" })
+      trackAnalyticsEvent("contact_form_submit")
       setSuccess(true)
       setForm({ name: "", email: "", phone: "", company: "", message: "", privacy: false, website: "" })
     } catch (error) {
@@ -92,8 +108,8 @@ export default function KontaktPage() {
           code="CONTACT / INQUIRY"
         />
 
-        <section className="py-20 px-6">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
+        <section className="px-4 py-14 sm:px-6 sm:py-16 lg:py-20">
+          <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-2 lg:gap-16">
             {/* Left: Info */}
             <div>
               <h2 className="text-2xl font-bold text-[#08415C] dark:text-white mb-6">
@@ -110,7 +126,7 @@ export default function KontaktPage() {
                   { icon: Phone, label: "Telefon", value: COMPANY_PHONE, href: COMPANY_PHONE_HREF },
                   { icon: Mail, label: "E-Mail", value: COMPANY_EMAIL, href: COMPANY_EMAIL_HREF },
                   { icon: MapPin, label: "Labor", value: COMPANY_ADDRESS_FULL },
-                  { icon: Clock, label: "Antwortzeit", value: "In der Regel innerhalb von 24h" },
+                  { icon: Clock, label: "Rückmeldung", value: "Persönlich nach Prüfung Ihrer Anfrage" },
                 ].map((item) => {
                   const Icon = item.icon
                   return (
@@ -118,10 +134,10 @@ export default function KontaktPage() {
                       <div className="w-10 h-10 rounded-xl bg-[#08415C]/10 dark:bg-[#50C9E1]/10 flex items-center justify-center flex-shrink-0">
                         <Icon size={18} className="text-[#08415C] dark:text-[#50C9E1]" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">{item.label}</p>
                         {item.href ? (
-                          <a href={item.href} className="font-medium text-[#08415C] dark:text-white hover:text-[#50C9E1] transition-colors">
+                          <a href={item.href} className="font-medium text-[#08415C] [overflow-wrap:anywhere] dark:text-white hover:text-[#50C9E1] transition-colors">
                             {item.value}
                           </a>
                         ) : (
@@ -152,8 +168,16 @@ export default function KontaktPage() {
             </div>
 
             {/* Right: Form */}
-            <div className="bg-gray-50 dark:bg-[#0f2b3b] rounded-2xl p-8 border border-gray-200 dark:border-gray-700 shadow-sm">
-              <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm dark:border-gray-700 dark:bg-[#0f2b3b] sm:p-8">
+              <form
+                onSubmit={handleSubmit}
+                onFocusCapture={() => {
+                  if (hasStarted.current) return
+                  hasStarted.current = true
+                  trackAnalyticsEvent("contact_form_start")
+                }}
+                className="space-y-5"
+              >
                 <h3 className="text-xl font-bold text-[#08415C] dark:text-white mb-2">
                   Nachricht senden
                 </h3>
@@ -170,12 +194,14 @@ export default function KontaktPage() {
                       autoComplete="name"
                       maxLength={100}
                       required
+                      aria-invalid={Boolean(errors.name)}
+                      aria-describedby={errors.name ? "contact-name-error" : undefined}
                       value={form.name}
                       onChange={handleChange}
                       placeholder="Vor- und Nachname"
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition"
                     />
-                    {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                    {errors.name && <p id="contact-name-error" role="alert" className="text-red-500 text-xs mt-1">{errors.name}</p>}
                   </div>
                   <div>
                     <label htmlFor="contact-company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -188,12 +214,14 @@ export default function KontaktPage() {
                       autoComplete="organization"
                       maxLength={120}
                       required
+                      aria-invalid={Boolean(errors.company)}
+                      aria-describedby={errors.company ? "contact-company-error" : undefined}
                       value={form.company}
                       onChange={handleChange}
                       placeholder="Muster GmbH"
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition"
                     />
-                    {errors.company && <p className="text-red-500 text-xs mt-1">{errors.company}</p>}
+                    {errors.company && <p id="contact-company-error" role="alert" className="text-red-500 text-xs mt-1">{errors.company}</p>}
                   </div>
                 </div>
 
@@ -209,12 +237,14 @@ export default function KontaktPage() {
                       autoComplete="email"
                       maxLength={254}
                       required
+                      aria-invalid={Boolean(errors.email)}
+                      aria-describedby={errors.email ? "contact-email-error" : undefined}
                       value={form.email}
                       onChange={handleChange}
                       placeholder="max@muster.de"
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition"
                     />
-                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                    {errors.email && <p id="contact-email-error" role="alert" className="text-red-500 text-xs mt-1">{errors.email}</p>}
                   </div>
                   <div>
                     <label htmlFor="contact-phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -270,7 +300,9 @@ export default function KontaktPage() {
                     name="privacy"
                     checked={form.privacy}
                     onChange={handleChange}
-                    className="mt-1 accent-[#50C9E1]"
+                    aria-invalid={Boolean(errors.privacy)}
+                    aria-describedby={errors.privacy ? "contact-privacy-error" : undefined}
+                    className="mt-0.5 h-5 w-5 shrink-0 accent-[#50C9E1]"
                   />
                   <label htmlFor="privacy" className="text-sm text-gray-600 dark:text-gray-400">
                     Ich habe die{" "}
@@ -280,7 +312,7 @@ export default function KontaktPage() {
                     gelesen und stimme der Verarbeitung meiner Daten zu. <span className="text-red-500">*</span>
                   </label>
                 </div>
-                {errors.privacy && <p className="text-red-500 text-xs -mt-3">{errors.privacy}</p>}
+                {errors.privacy && <p id="contact-privacy-error" role="alert" className="text-red-500 text-xs -mt-3">{errors.privacy}</p>}
 
                 {errors.submit && (
                   <p role="alert" className="text-red-500 text-sm bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 rounded-lg">
@@ -303,23 +335,25 @@ export default function KontaktPage() {
 
       {/* Success Modal */}
       {success && (
-          <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center px-6">
+          <div className="fixed inset-0 z-[130] flex items-center justify-center bg-black/70 p-[max(1rem,env(safe-area-inset-left))]">
             <div
               role="dialog"
               aria-modal="true"
               aria-labelledby="contact-success-title"
-              className="bg-white dark:bg-[#0f2b3b] text-center px-8 py-12 rounded-2xl shadow-2xl max-w-md w-full border border-gray-200 dark:border-gray-700"
+              className="max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl border border-gray-200 bg-white px-6 py-8 text-center shadow-2xl dark:border-gray-700 dark:bg-[#0f2b3b] sm:px-8 sm:py-12"
             >
               <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-6">
                 <CheckCircle size={32} className="text-green-500" />
               </div>
               <h3 id="contact-success-title" className="text-2xl font-bold text-[#08415C] dark:text-white mb-3">Vielen Dank!</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Ihre Nachricht wurde erfolgreich übermittelt. Wir melden uns in der Regel innerhalb von 24 Stunden bei Ihnen.
+                Ihre Nachricht wurde erfolgreich übermittelt. Wir prüfen Ihre Angaben und melden uns persönlich bei Ihnen.
               </p>
               <button
+                ref={successCloseRef}
+                type="button"
                 onClick={() => setSuccess(false)}
-                className="bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-6 py-3 rounded-full transition"
+                className="min-h-11 bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-6 py-3 rounded-full transition"
               >
                 Fenster schließen
               </button>

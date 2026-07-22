@@ -23,6 +23,7 @@ export default function Navbar() {
   const reducedMotion = useReducedMotion()
   const mobileMenuRef = useRef<HTMLElement>(null)
   const mobileItemsRef = useRef<HTMLDivElement>(null)
+  const menuTriggerRef = useRef<HTMLButtonElement>(null)
   const [isOpen, setIsOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
@@ -56,12 +57,43 @@ export default function Navbar() {
   useEffect(() => {
     if (!isOpen) return
 
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsOpen(false)
+    const menuElement = mobileMenuRef.current
+    const menuTrigger = menuTriggerRef.current
+    const focusableElements = Array.from(
+      menuElement?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ) ?? [],
+    )
+    const firstElement = focusableElements[0]
+    const lastElement = focusableElements.at(-1)
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault()
+        setIsOpen(false)
+        return
+      }
+
+      if (event.key !== "Tab" || !firstElement || !lastElement) return
+      if (!menuElement?.contains(document.activeElement)) {
+        event.preventDefault()
+        if (event.shiftKey) lastElement.focus()
+        else firstElement.focus()
+        return
+      }
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
+      }
     }
 
-    document.addEventListener("keydown", handleEscape)
-    return () => document.removeEventListener("keydown", handleEscape)
+    document.addEventListener("keydown", handleKeyDown)
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+      menuTrigger?.focus()
+    }
   }, [isOpen])
 
   useEffect(() => {
@@ -79,11 +111,17 @@ export default function Navbar() {
     const menuElement = mobileMenuRef.current
     const itemsElement = mobileItemsRef.current
     if (!menuElement || !itemsElement) return
+    const focusFirstMenuItem = () => {
+      itemsElement
+        .querySelector<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        ?.focus({ preventScroll: true })
+    }
 
     if (reducedMotion) {
       menuElement.style.visibility = isOpen ? "visible" : "hidden"
       menuElement.style.opacity = isOpen ? "1" : "0"
       menuElement.style.transform = "none"
+      if (isOpen) window.requestAnimationFrame(focusFirstMenuItem)
       return
     }
 
@@ -96,6 +134,7 @@ export default function Navbar() {
 
       if (isOpen) {
         gsap.set(menuElement, { visibility: "visible" })
+        focusFirstMenuItem()
         gsap.fromTo(
           menuElement,
           { autoAlpha: 0, y: -14 },
@@ -146,10 +185,10 @@ export default function Navbar() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className={`flex items-center justify-between transition-[padding] duration-300 ${isScrolled ? "py-2.5" : "py-4"}`}>
             <Link href="/" className="relative z-50 flex items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#50C9E1]" aria-label="Kinemo Startseite">
-              <Image src="/01_logo_blau.png" alt="Kinemo" width={130} height={40} priority />
+              <Image src="/01_logo_blau.png" alt="Kinemo" width={130} height={40} priority className="h-auto w-28 sm:w-[130px]" />
             </Link>
 
-            <div className="hidden items-center gap-4 md:flex">
+            <div className="hidden items-center gap-3 lg:flex xl:gap-4">
               <button
                 type="button"
                 onClick={toggleDarkMode}
@@ -168,8 +207,9 @@ export default function Navbar() {
             </div>
 
             <button
+              ref={menuTriggerRef}
               type="button"
-              className="relative z-50 rounded-full border border-current/20 p-2 md:hidden"
+              className="relative z-50 flex min-h-11 min-w-11 items-center justify-center rounded-full border border-current/20 p-2 lg:hidden"
               onClick={() => setIsOpen((open) => !open)}
               aria-label={isOpen ? "Menü schließen" : "Menü öffnen"}
               aria-expanded={isOpen}
@@ -179,12 +219,12 @@ export default function Navbar() {
             </button>
           </div>
 
-          <nav aria-label="Hauptnavigation" className={`hidden flex-wrap gap-6 transition-[padding] duration-300 md:flex ${isScrolled ? "pb-2.5" : "pb-4"}`}>
+          <nav aria-label="Hauptnavigation" className={`hidden flex-wrap gap-x-4 gap-y-2 transition-[padding] duration-300 lg:flex xl:gap-x-6 ${isScrolled ? "pb-2.5" : "pb-4"}`}>
             {menu.map((item) => (
               <Link
                 key={item.path}
                 href={item.path}
-                className={`group relative py-1 text-sm font-medium transition-colors hover:text-[#50C9E1] ${isActive(item.path) ? "text-[#50C9E1]" : ""}`}
+                className={`group relative py-1 text-[0.82rem] font-medium transition-colors hover:text-[#50C9E1] xl:text-sm ${isActive(item.path) ? "text-[#50C9E1]" : ""}`}
               >
                 {item.title}
                 <span className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-[#50C9E1] transition-transform duration-300 ${isActive(item.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`} />
@@ -198,7 +238,26 @@ export default function Navbar() {
           ref={mobileMenuRef}
           aria-label="Mobile Navigation"
           aria-hidden={!isOpen}
-          className={`fixed inset-0 z-40 bg-[#061b26] px-6 pb-8 pt-24 text-white md:hidden ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+          onKeyDown={(event) => {
+            if (event.key !== "Tab") return
+            const focusableElements = Array.from(
+              event.currentTarget.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+              ),
+            )
+            const firstElement = focusableElements[0]
+            const lastElement = focusableElements.at(-1)
+            if (!firstElement || !lastElement) return
+
+            if (event.shiftKey && document.activeElement === firstElement) {
+              event.preventDefault()
+              lastElement.focus()
+            } else if (!event.shiftKey && document.activeElement === lastElement) {
+              event.preventDefault()
+              firstElement.focus()
+            }
+          }}
+          className={`fixed inset-0 z-40 overscroll-contain bg-[#061b26] px-[max(1.25rem,env(safe-area-inset-left))] pb-[max(2rem,env(safe-area-inset-bottom))] pt-[calc(5.75rem+env(safe-area-inset-top))] text-white lg:hidden ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
           style={{ visibility: "hidden", opacity: 0 }}
         >
           <div ref={mobileItemsRef} className="mx-auto flex h-full max-w-lg flex-col overflow-y-auto">
@@ -207,6 +266,7 @@ export default function Navbar() {
               <Link
                 key={item.path}
                 href={item.path}
+                onClick={() => setIsOpen(false)}
                 tabIndex={isOpen ? 0 : -1}
                 className={`flex items-baseline justify-between border-b border-white/10 py-4 text-2xl font-semibold sm:text-3xl ${isActive(item.path) ? "text-[#50C9E1]" : "text-white"}`}
               >
@@ -234,7 +294,7 @@ export default function Navbar() {
       {showScrollTop && (
         <button
           type="button"
-          className="fixed bottom-20 right-4 z-40 rounded-full bg-[#50C9E1] p-3 text-[#08415C] shadow-lg transition-colors hover:bg-[#7DDBF3] sm:bottom-6 sm:right-6"
+          className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-40 flex min-h-11 min-w-11 items-center justify-center rounded-full bg-[#50C9E1] p-3 text-[#08415C] shadow-lg transition-colors hover:bg-[#7DDBF3] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] sm:right-[max(1.5rem,env(safe-area-inset-right))]"
           onClick={() => window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" })}
           aria-label="Nach oben scrollen"
         >

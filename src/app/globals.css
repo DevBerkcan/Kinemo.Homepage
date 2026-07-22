@@ -23,9 +23,12 @@ html {
   scroll-behavior: smooth;
   max-width: 100%;
   overflow-x: clip;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
+  min-width: 0;
   max-width: 100%;
   overflow-x: clip;
   background-color: var(--background);
@@ -41,6 +44,47 @@ a {
 
 button {
   transition: background-color 0.3s, color 0.3s;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+img,
+video {
+  display: block;
+  height: auto;
+}
+
+:where(main, section, article, aside, header, footer, nav, div) {
+  min-width: 0;
+}
+
+:where(h1, h2, h3, h4, p, li, dt, dd, a, button, label) {
+  overflow-wrap: anywhere;
+}
+
+:where(input, textarea, select) {
+  max-width: 100%;
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+:where(button, [role="button"], input, textarea, select, summary) {
+  touch-action: manipulation;
+}
+
+.table-scroll-region {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 :where(a, button, input, textarea, select, summary):focus-visible {
@@ -96,6 +140,19 @@ button {
   }
 
   .kinemo-logo-track {
+    animation: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .kinemo-logo-track {
+    animation-duration: 40s;
+  }
+}
+
+@media (max-width: 47.999rem), (max-height: 35rem) {
+  .kinemo-scan-line,
+  .kinemo-particle {
     animation: none;
   }
 }

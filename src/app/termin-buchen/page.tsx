@@ -1,18 +1,20 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Phone, Mail, Clock, CheckCircle, CalendarCheck } from "lucide-react"
 import { createBreadcrumbJsonLd } from "@/lib/seo"
 import { COMPANY_EMAIL, COMPANY_EMAIL_HREF, COMPANY_PHONE, COMPANY_PHONE_HREF } from "@/lib/site"
 import { submitInquiry } from "@/lib/inquiry"
+import { trackAnalyticsEvent } from "@/lib/analytics"
 
 const trustItems = [
-  { icon: Clock, text: "Antwort in der Regel innerhalb von 24h" },
+  { icon: Clock, text: "Persönliche Rückmeldung nach Prüfung der Anfrage" },
   { icon: CheckCircle, text: "Kostenlos & unverbindlich" },
   { icon: CalendarCheck, text: "Flexibel – per Telefon, Video oder vor Ort" },
 ]
 
 export default function TerminBuchenPage() {
+  const hasStarted = useRef(false)
   const [formData, setFormData] = useState({
     name: "",
     company: "",
@@ -42,6 +44,7 @@ export default function TerminBuchenPage() {
 
     try {
       await submitInquiry({ ...formData, source: "booking" })
+      trackAnalyticsEvent("booking_submit")
       setSubmitted(true)
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Die Terminanfrage konnte nicht gesendet werden.")
@@ -136,11 +139,19 @@ export default function TerminBuchenPage() {
                     Anfrage erhalten!
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Wir melden uns in der Regel innerhalb von 24 Stunden bei Ihnen.
+                    Wir prüfen Ihre Angaben und melden uns persönlich bei Ihnen.
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form
+                  onSubmit={handleSubmit}
+                  onFocusCapture={() => {
+                    if (hasStarted.current) return
+                    hasStarted.current = true
+                    trackAnalyticsEvent("booking_start")
+                  }}
+                  className="space-y-5"
+                >
                   <h3 className="text-xl font-bold text-[#08415C] dark:text-white mb-6">
                     Termin anfragen
                   </h3>

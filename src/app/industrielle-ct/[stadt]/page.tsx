@@ -6,6 +6,7 @@ import JsonLd from "@/app/components/JsonLd"
 import PageCta from "@/app/components/PageCta"
 import PageHero from "@/app/components/PageHero"
 import { createRegionalFaqs, regionalPages } from "@/lib/geo-content"
+import { isRegionalContentApproved } from "@/lib/deployment"
 import { createPageMetadata } from "@/lib/seo"
 import { createBreadcrumbNode, createFaqNode, createSchemaGraph, createServiceNode, createWebPageNode } from "@/lib/schema"
 
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: RegionalPageProps): Promise<M
     description: `Zerstörungsfreie Bauteilprüfung für Unternehmen aus ${region.city}: industrielle CT, 2D-Röntgen, Fehleranalyse und digitale Befundauswertung über den Kinemo-Standort Wuppertal.`,
     path: `/industrielle-ct/${region.slug}`,
     keywords: [`industrielle CT ${region.city}`, `Röntgenanalyse ${region.city}`, `Bauteilprüfung ${region.city}`],
+    noindex: region.slug !== "wuppertal" && !isRegionalContentApproved,
   })
 }
 
