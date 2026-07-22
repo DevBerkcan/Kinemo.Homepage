@@ -1,7 +1,7 @@
-import Navbar from "@components/navigationsbar"
-import Footer from "@components/Footer"
 import Link from "next/link"
 import { Car, Cpu, Box, Cog, HeartPulse, ShoppingBag, ArrowRight, CheckCircle } from "lucide-react"
+import PageCta from "@/app/components/PageCta"
+import PageHero from "@/app/components/PageHero"
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 
 export const metadata = createPageMetadata({
@@ -81,31 +81,14 @@ export default function BranchenPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <Navbar />
       <main className="bg-white dark:bg-[#061b26] text-gray-900 dark:text-white">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-[#08415C] to-[#061b26] text-white py-24 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-[#50C9E1]/10 text-[#50C9E1] px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Cog size={16} />
-              Branchen
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Für Ihre Branche
-            </h1>
-            <p className="text-lg text-gray-200 max-w-3xl mx-auto mb-8">
-              Kinemo unterstützt Unternehmen aus verschiedensten Industrien dabei, innere Fehler
-              frühzeitig zu erkennen – zerstörungsfrei, präzise und mit klaren Handlungsempfehlungen.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-8 py-4 rounded-full transition-all gap-2"
-            >
-              Anwendungsfall besprechen
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </section>
+        <PageHero
+          eyebrow="02 / Branchen"
+          code="INDUSTRY / 06"
+          title="Für Ihre Branche"
+          description="Kinemo unterstützt Unternehmen aus verschiedenen Industrien dabei, innere Fehler frühzeitig zu erkennen – zerstörungsfrei, präzise und mit klaren Handlungsempfehlungen."
+          ctaLabel="Anwendungsfall besprechen"
+        />
 
         {/* Industry blocks */}
         <section className="py-24 px-6">
@@ -149,26 +132,12 @@ export default function BranchenPage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="bg-gradient-to-r from-[#08415C] to-[#0C5374] text-white py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ihre Branche ist dabei.
-            </h2>
-            <p className="text-gray-200 mb-8 text-lg">
-              Sprechen Sie uns an – wir klären gemeinsam, wie Kinemo Ihre spezifische Prüfaufgabe lösen kann.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-8 py-4 rounded-full transition-all gap-2"
-            >
-              Jetzt unverbindlich anfragen
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </section>
+        <PageCta
+          title="Ihre Branche ist dabei."
+          description="Wir klären gemeinsam, wie Kinemo Ihre spezifische Prüfaufgabe lösen kann."
+          label="Jetzt unverbindlich anfragen"
+        />
       </main>
-      <Footer />
     </>
   )
 }

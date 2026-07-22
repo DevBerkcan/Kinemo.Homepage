@@ -1,13 +1,36 @@
 // src/app/blog/[slug]/page.tsx
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import Navbar from "@/app/components/navigationsbar"
-import Footer from "@/app/components/Footer"
 import Link from "next/link"
+import PageCta from "@/app/components/PageCta"
 import { blogPostMap, blogPosts } from "@/lib/blog-posts"
-import { SITE_URL, createBreadcrumbJsonLd } from "@/lib/seo"
+import { SITE_URL, createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
+import { entityIds } from "@/lib/schema"
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const post = blogPostMap[slug]
+
+  if (!post) {
+    return createPageMetadata({
+      title: "Blogbeitrag nicht gefunden",
+      description: "Der angeforderte Blogbeitrag konnte nicht gefunden werden.",
+      path: `/blog/${slug}`,
+      noindex: true,
+    })
+  }
+
+  return createPageMetadata({
+    title: `${post.title} | Kinemo Blog`,
+    description: post.excerpt,
+    path: `/blog/${slug}`,
+    keywords: post.tags,
+    image: post.image,
+  })
 }
 
 export default async function BlogPost({ params }: BlogPostPageProps) {
@@ -23,8 +46,10 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
     dateModified: post.date,
     description: post.excerpt,
     image: post.image,
-    author: { "@type": "Organization", name: "Kinemo", url: SITE_URL },
-    publisher: { "@type": "Organization", name: "Kinemo", url: SITE_URL },
+    author: { "@id": entityIds.organization },
+    publisher: { "@id": entityIds.organization },
+    isPartOf: { "@id": entityIds.website },
+    about: post.tags.map((name) => ({ "@type": "Thing", name })),
     url: `${SITE_URL}/blog/${slug}`,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${slug}` },
   }
@@ -45,30 +70,26 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <Navbar />
-      <main className="bg-white dark:bg-[#061b26] min-h-screen">
-        <div className="max-w-3xl mx-auto px-6 py-20">
-          {/* Back */}
-          <Link href="/blog" className="text-sm text-[#50C9E1] hover:underline mb-8 inline-block">
-            ← Zurück zum Blog
-          </Link>
-
-          {/* Meta */}
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {new Date(post.date).toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}
-            </span>
-            {post.tags.map((tag) => (
-              <span key={tag} className="px-2 py-0.5 rounded text-xs bg-[#50C9E1]/15 text-[#08415C] dark:text-[#50C9E1] font-medium">
-                #{tag}
-              </span>
-            ))}
+      <main className="min-h-screen bg-white dark:bg-[#061b26]">
+        <header className="border-b border-white/10 bg-[#061b26] px-6 py-16 text-white md:py-24">
+          <div className="mx-auto max-w-3xl">
+            <Link href="/blog" className="font-mono text-xs uppercase tracking-[0.2em] text-[#50C9E1] hover:text-white">
+              ← Blog & Wissen
+            </Link>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <time dateTime={post.date} className="text-sm text-white/55">
+                {new Date(post.date).toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}
+              </time>
+              {post.tags.map((tag) => (
+                <span key={tag} className="border border-[#50C9E1]/25 px-2 py-1 text-xs font-medium text-[#50C9E1]">#{tag}</span>
+              ))}
+            </div>
+            <h1 className="mt-5 text-4xl font-bold leading-tight tracking-[-0.04em] md:text-5xl">{post.title}</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60">{post.excerpt}</p>
           </div>
+        </header>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-[#08415C] dark:text-white mb-10">
-            {post.title}
-          </h1>
-
+        <div className="mx-auto max-w-3xl px-6 py-14 md:py-20">
           <article
             className="prose prose-lg prose-neutral dark:prose-invert max-w-none
               prose-headings:text-[#08415C] dark:prose-headings:text-white
@@ -76,20 +97,13 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
-          {/* CTA */}
-          <div className="mt-16 bg-gradient-to-r from-[#08415C] to-[#0C5374] text-white rounded-2xl p-8 text-center">
-            <h3 className="text-xl font-bold mb-3">Fragen oder Analyse anfragen?</h3>
-            <p className="text-gray-200 text-sm mb-5">Wir beraten Sie gerne – kostenlos und unverbindlich.</p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-6 py-3 rounded-full transition-all"
-            >
-              Jetzt Kontakt aufnehmen →
-            </Link>
-          </div>
         </div>
+        <PageCta
+          title="Vom Fachbeitrag zur konkreten Prüfentscheidung."
+          description="Wir übertragen die Methodik auf Ihr Bauteil und Ihre Fragestellung."
+          label="Prüfaufgabe besprechen"
+        />
       </main>
-      <Footer />
     </>
   )
 }

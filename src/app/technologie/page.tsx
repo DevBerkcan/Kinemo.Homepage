@@ -1,7 +1,6 @@
-import Navbar from "@components/navigationsbar"
-import Footer from "@components/Footer"
-import Link from "next/link"
-import { ArrowRight, CheckCircle, Scan, Layers, Microscope, GitCompare, ShieldCheck, AlertTriangle } from "lucide-react"
+import { CheckCircle, Scan, Layers, Microscope, GitCompare, ShieldCheck, AlertTriangle } from "lucide-react"
+import PageCta from "@/app/components/PageCta"
+import PageHero from "@/app/components/PageHero"
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 
 export const metadata = createPageMetadata({
@@ -73,25 +72,14 @@ export default function TechnologiePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <Navbar />
       <main className="bg-white dark:bg-[#061b26] text-gray-900 dark:text-white">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-[#08415C] to-[#061b26] text-white py-24 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-[#50C9E1]/10 text-[#50C9E1] px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Scan size={16} />
-              Technologie
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Industrielle CT & Röntgenanalyse – wie es funktioniert
-            </h1>
-            <p className="text-lg text-gray-200 max-w-3xl mx-auto">
-              Vertrauen entsteht durch Verstehen. Erfahren Sie, wie industrielle Computertomographie
-              und Röntgenanalyse funktionieren, wo die Unterschiede liegen und was diese Technologien
-              für Ihre Produktentwicklung leisten können.
-            </p>
-          </div>
-        </section>
+        <PageHero
+          eyebrow="Technologie verstehen"
+          title="Industrielle CT und Röntgenanalyse – von der Projektion zum Befund."
+          description="Wie die Verfahren funktionieren, wo ihre Unterschiede liegen und welche Methode zu Ihrer konkreten Prüfaufgabe passt."
+          code="TECH / CT + X-RAY"
+          ctaLabel="Prüfaufgabe besprechen"
+        />
 
         {/* Was ist industrielle CT */}
         <section className="py-20 px-6">
@@ -141,7 +129,7 @@ export default function TechnologiePage() {
                 </thead>
                 <tbody>
                   {ctVsXray.map((row, i) => (
-                    <tr key={i} className={`border-t border-gray-200 dark:border-gray-700 ${i % 2 === 0 ? "bg-white dark:bg-[#061b26]" : "bg-gray-50 dark:bg-[#0f2b3b]"}`}>
+                    <tr key={row.aspect} className={`border-t border-gray-200 dark:border-gray-700 ${i % 2 === 0 ? "bg-white dark:bg-[#061b26]" : "bg-gray-50 dark:bg-[#0f2b3b]"}`}>
                       <td className="px-6 py-4 font-medium text-[#08415C] dark:text-white">{row.aspect}</td>
                       <td className="px-6 py-4 text-gray-700 dark:text-gray-300">{row.ct}</td>
                       <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{row.xray}</td>
@@ -164,10 +152,10 @@ export default function TechnologiePage() {
               unverzichtbar sind.
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {advantages.map((adv, i) => {
+              {advantages.map((adv) => {
                 const Icon = adv.icon
                 return (
-                  <div key={i} className="bg-gray-50 dark:bg-[#0f2b3b] border border-gray-200 dark:border-gray-700 rounded-2xl p-7">
+                  <div key={adv.title} className="bg-gray-50 dark:bg-[#0f2b3b] border border-gray-200 dark:border-gray-700 rounded-2xl p-7">
                     <div className="w-11 h-11 rounded-xl bg-[#08415C]/10 dark:bg-[#50C9E1]/10 flex items-center justify-center mb-5">
                       <Icon size={20} className="text-[#08415C] dark:text-[#50C9E1]" />
                     </div>
@@ -196,8 +184,8 @@ export default function TechnologiePage() {
                 { title: "Farbkodierter Soll-Ist-Vergleich", desc: "Abweichungen zwischen CT-Daten und CAD-Modell werden farbkodiert visualisiert – Abweichungen sofort erkennbar." },
                 { title: "Porositäts- und Defektanalyse", desc: "Automatische Erkennung und Klassifizierung von Hohlräumen, Poren und Einschlüssen – mit Volumen- und Positionsangabe." },
                 { title: "Annotierte Berichte", desc: "Alle relevanten Befunde werden in einem strukturierten PDF-Bericht zusammengefasst – mit Bildern, Maßen und Handlungsempfehlungen." },
-              ].map((item, i) => (
-                <li key={i} className="flex items-start gap-4 bg-white dark:bg-[#061b26] rounded-xl p-5 border border-gray-200 dark:border-gray-700">
+              ].map((item) => (
+                <li key={item.title} className="flex items-start gap-4 bg-white dark:bg-[#061b26] rounded-xl p-5 border border-gray-200 dark:border-gray-700">
                   <CheckCircle size={18} className="text-[#50C9E1] flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-semibold text-[#08415C] dark:text-white mb-1">{item.title}</h3>
@@ -222,8 +210,8 @@ export default function TechnologiePage() {
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-7">
               <h3 className="font-semibold text-[#08415C] dark:text-white mb-4">Einschränkungen, die Sie kennen sollten:</h3>
               <ul className="space-y-3">
-                {limits.map((limit, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                {limits.map((limit) => (
+                  <li key={limit} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                     <span className="w-5 h-5 rounded-full bg-amber-200 dark:bg-amber-700 text-amber-800 dark:text-amber-200 text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">!</span>
                     {limit}
                   </li>
@@ -233,27 +221,12 @@ export default function TechnologiePage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="bg-gradient-to-r from-[#08415C] to-[#0C5374] text-white py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Fragen zur Technologie?
-            </h2>
-            <p className="text-gray-200 mb-8 text-lg">
-              Wir erklären Ihnen gerne, welches Verfahren für Ihre spezifische Prüfaufgabe
-              am besten geeignet ist – kostenlos und unverbindlich.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-8 py-4 rounded-full transition-all gap-2"
-            >
-              Jetzt Frage stellen
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </section>
+        <PageCta
+          title="Welche Technologie passt zu Ihrem Bauteil?"
+          description="Wir ordnen Material, Geometrie und Fragestellung ein und empfehlen das passende Prüfverfahren."
+          label="Technische Frage stellen"
+        />
       </main>
-      <Footer />
     </>
   )
 }

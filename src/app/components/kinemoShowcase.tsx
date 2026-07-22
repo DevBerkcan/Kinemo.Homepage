@@ -1,44 +1,25 @@
-"use client"
-
-import { motion } from "framer-motion"
-import dynamic from "next/dynamic"
-
-const ReactCompareImage = dynamic(() => import("react-compare-image"), { ssr: false })
+import CompareSlider from "./CompareSlider"
 
 export default function KinemoShowcase() {
   return (
-    <section className="bg-white dark:bg-[#0f2b3b] py-24 px-4">
-      <div className="max-w-6xl mx-auto text-center mb-12">
-        <h2 className="text-3xl font-bold text-[#08415C] dark:text-white mb-4">
-          Röntgenanalyse im Vergleich
-        </h2>
-        <p className="text-gray-600 dark:text-gray-300">
-          Bewegen Sie den Regler und sehen Sie, was industrielle CT-Analyse im Bauteilinneren sichtbar macht.
-        </p>
-      </div>
+    <section className="relative overflow-hidden bg-[#071f2c] px-5 py-24 text-white sm:px-6 lg:py-32">
+      <div className="pointer-events-none absolute inset-0 bg-[url('/xray-grid-pattern.svg')] bg-repeat opacity-[0.06]" aria-hidden="true" />
+      <div className="relative mx-auto max-w-7xl">
+        <div data-motion="reveal" className="mb-12 grid gap-6 lg:grid-cols-[1fr_0.7fr] lg:items-end">
+          <div>
+            <p className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-[#50C9E1]">03 / Sichtprüfung</p>
+            <h2 className="max-w-4xl text-4xl font-bold leading-[1.06] sm:text-5xl lg:text-6xl">
+              Die Oberfläche zeigt nur <span className="text-[#50C9E1]">die halbe Wahrheit.</span>
+            </h2>
+          </div>
+          <p className="max-w-xl leading-relaxed text-gray-300 lg:justify-self-end">
+            Verschieben Sie die Scanlinie und vergleichen Sie Außenansicht und innere Struktur direkt miteinander.
+          </p>
+        </div>
 
-      {/* Drei Vergleichsslider nebeneinander */}
-      <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {[1, 2, 3].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: i * 0.2 }}
-            viewport={{ once: true }}
-            className="bg-white dark:bg-[#061b26] p-4 rounded-lg shadow-lg border border-gray-200 dark:border-[#1a3a4b]"
-          >
-            <ReactCompareImage
-              leftImage="/xray-before.jpg"
-              rightImage="/xray-after.jpg"
-              sliderLineColor="#50C9E1"
-              handleSize={40}
-            />
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-4 text-center">
-              Beispiel {i + 1}: Analyse eines mechanischen Teils
-            </p>
-          </motion.div>
-        ))}
+        <div data-motion="reveal">
+          <CompareSlider />
+        </div>
       </div>
     </section>
   )

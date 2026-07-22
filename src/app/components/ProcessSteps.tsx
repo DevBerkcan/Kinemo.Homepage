@@ -1,93 +1,45 @@
-"use client"
-
-import { motion } from "framer-motion"
-import { MessageSquare, ClipboardList, Scan, BarChart3 } from "lucide-react"
+import { BarChart3, ClipboardList, MessageSquare, Scan } from "lucide-react"
 
 const steps = [
-  {
-    number: "01",
-    icon: MessageSquare,
-    title: "Anfrage & Zielklärung",
-    description: "Sie beschreiben Ihr Bauteil, den Prüfauftrag und Ihre Fragestellung. Wir klären gemeinsam, welches Verfahren den größten Erkenntnisgewinn bringt.",
-  },
-  {
-    number: "02",
-    icon: ClipboardList,
-    title: "Analyseplanung",
-    description: "Wir definieren Auflösung, Ausrichtung und Prüfparameter – abgestimmt auf Bauteilgröße, Material und Ihre spezifische Fragestellung.",
-  },
-  {
-    number: "03",
-    icon: Scan,
-    title: "Röntgen / CT-Auswertung",
-    description: "Das Bauteil wird eingescannt, die Daten werden rekonstruiert und ausgewertet. Fehlerstrukturen, Abweichungen und Auffälligkeiten werden identifiziert und annotiert.",
-  },
-  {
-    number: "04",
-    icon: BarChart3,
-    title: "Ergebnisbesprechung & Handlungsempfehlung",
-    description: "Sie erhalten einen strukturierten Analysebericht mit Visualisierungen, Befunden und konkreten Handlungsempfehlungen – und wir besprechen die Ergebnisse mit Ihrem Team.",
-  },
+  { number: "01", icon: MessageSquare, title: "Anfrage & Zielklärung", description: "Sie beschreiben Ihr Bauteil, den Prüfauftrag und Ihre Fragestellung. Gemeinsam klären wir, welches Verfahren den größten Erkenntnisgewinn bringt." },
+  { number: "02", icon: ClipboardList, title: "Analyseplanung", description: "Wir definieren Auflösung, Ausrichtung und Prüfparameter – abgestimmt auf Bauteilgröße, Material und Ihre spezifische Fragestellung." },
+  { number: "03", icon: Scan, title: "Röntgen- oder CT-Auswertung", description: "Das Bauteil wird gescannt, die Daten werden rekonstruiert und ausgewertet. Auffälligkeiten werden identifiziert und annotiert." },
+  { number: "04", icon: BarChart3, title: "Ergebnis & Handlungsempfehlung", description: "Sie erhalten einen strukturierten Analysebericht mit Visualisierungen, Befunden und konkreten Handlungsempfehlungen für Ihr Team." },
 ]
 
 export default function ProcessSteps() {
   return (
-    <section className="bg-white dark:bg-[#061b26] py-24 px-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-        >
-          <div className="inline-flex items-center gap-2 bg-[#50C9E1]/10 text-[#50C9E1] px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <ClipboardList size={16} />
-            Ablauf
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#08415C] dark:text-white mb-6">
-            So funktioniert&apos;s
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Von der ersten Anfrage bis zum Ergebnis – ein klar strukturierter Prozess,
-            damit Sie schnell und sicher die Antworten bekommen, die Sie brauchen.
-          </p>
-        </motion.div>
+    <section className="bg-[#eef6f8] px-5 py-24 dark:bg-[#081f2b] sm:px-6 lg:py-32">
+      <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div data-motion="reveal" className="self-start lg:sticky lg:top-32">
+          <p className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-[#1f9cb1]">04 / Ablauf</p>
+          <h2 className="text-4xl font-bold leading-[1.05] text-[#08415C] dark:text-white sm:text-5xl lg:text-6xl">Vom Bauteil zur klaren Entscheidung.</h2>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-gray-600 dark:text-gray-300">Ein transparenter Prozess, damit Sie schnell die Antworten erhalten, die Entwicklung und Qualitätssicherung wirklich weiterbringen.</p>
 
-        {/* Desktop: horizontal connector line */}
-        <div className="relative">
-          {/* Connector line (desktop only) */}
-          <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#50C9E1]/30 to-transparent" style={{ top: "3rem" }} />
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, index) => {
-              const Icon = step.icon
-              return (
-                <motion.div
-                  key={index}
-                  className="relative flex flex-col items-center text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.12 }}
-                  viewport={{ once: true }}
-                >
-                  {/* Step number + icon circle */}
-                  <div className="relative mb-6">
-                    <div className="w-24 h-24 rounded-full bg-[#08415C] dark:bg-[#0C5374] border-4 border-white dark:border-[#061b26] shadow-xl flex items-center justify-center relative z-10">
-                      <Icon size={32} className="text-[#50C9E1]" />
-                    </div>
-                    <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-[#50C9E1] text-[#08415C] text-xs font-bold flex items-center justify-center z-20 shadow-md">
-                      {step.number}
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-[#08415C] dark:text-white mb-3">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">{step.description}</p>
-                </motion.div>
-              )
-            })}
+          <div className="relative mt-10 hidden aspect-square max-w-sm items-center justify-center overflow-hidden border border-[#08415C]/10 bg-[#08415C] lg:flex" aria-hidden="true">
+            <div className="absolute h-64 w-64 rounded-full border border-[#50C9E1]/20" />
+            <div className="absolute h-44 w-44 rounded-full border border-[#50C9E1]/30" />
+            <Scan size={72} className="text-[#50C9E1]" />
+            <span className="absolute bottom-6 left-6 font-mono text-xs uppercase tracking-[0.18em] text-[#50C9E1]">Analyse / Befund</span>
           </div>
         </div>
+
+        <ol data-motion="stagger" className="relative border-l border-[#1f9cb1]/30 pl-6 sm:pl-10">
+          {steps.map((step) => {
+            const Icon = step.icon
+            return (
+              <li key={step.number} className="group relative pb-14 last:pb-0 sm:pb-20">
+                <span className="absolute -left-[2.05rem] top-0 h-4 w-4 rounded-full border-4 border-[#eef6f8] bg-[#50C9E1] dark:border-[#081f2b] sm:-left-[2.8rem]" aria-hidden="true" />
+                <div className="flex items-start justify-between gap-6">
+                  <span className="font-mono text-sm tracking-[0.18em] text-[#1f9cb1]">{step.number}</span>
+                  <Icon className="text-[#1f9cb1]" aria-hidden="true" />
+                </div>
+                <h3 className="mt-5 text-2xl font-bold text-[#08415C] dark:text-white sm:text-3xl">{step.title}</h3>
+                <p className="mt-4 max-w-2xl leading-relaxed text-gray-600 dark:text-gray-300">{step.description}</p>
+              </li>
+            )
+          })}
+        </ol>
       </div>
     </section>
   )

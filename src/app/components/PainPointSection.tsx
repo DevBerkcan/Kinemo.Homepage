@@ -1,7 +1,4 @@
-"use client"
-
-import { motion } from "framer-motion"
-import { Clock, TrendingDown, Search, DollarSign, AlertTriangle } from "lucide-react"
+import { AlertTriangle, Clock, DollarSign, Search, TrendingDown } from "lucide-react"
 
 const painPoints = [
   {
@@ -33,53 +30,54 @@ const painPoints = [
 
 export default function PainPointSection() {
   return (
-    <section className="bg-[#061b26] dark:bg-[#050f15] py-24 px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-        >
-          <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <TrendingDown size={16} />
-            Das Problem
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Viele Fehler bleiben{" "}
-            <span className="text-[#50C9E1]">zu lange unsichtbar.</span>
-          </h2>
-          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-            Innere Strukturfehler, Materialdefekte und Fertigungsmängel sind von außen nicht erkennbar –
-            und werden deshalb oft viel zu spät entdeckt.
-          </p>
-        </motion.div>
+    <section id="benefits" className="relative scroll-mt-24 overflow-hidden bg-[#061b26] px-5 py-24 text-white sm:px-6 lg:py-32">
+      <div className="pointer-events-none absolute inset-0 opacity-30" aria-hidden="true">
+        <div className="absolute inset-y-0 left-[38%] hidden w-px bg-gradient-to-b from-transparent via-[#50C9E1]/40 to-transparent lg:block" />
+        <div className="absolute -right-32 top-24 h-96 w-96 rounded-full border border-[#50C9E1]/10" />
+        <div className="absolute -right-20 top-36 h-72 w-72 rounded-full border border-[#50C9E1]/10" />
+      </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div data-motion="reveal" className="self-start lg:sticky lg:top-32">
+          <div className="mb-6 inline-flex items-center gap-2 border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300">
+            <TrendingDown size={16} aria-hidden="true" />
+            01 / Das Problem
+          </div>
+          <h2 className="max-w-xl text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-6xl">
+            Viele Fehler bleiben <span className="text-[#50C9E1]">zu lange unsichtbar.</span>
+          </h2>
+          <p className="mt-7 max-w-lg text-base leading-relaxed text-gray-300 sm:text-lg">
+            Innere Strukturfehler, Materialdefekte und Fertigungsmängel sind von außen nicht erkennbar – und werden deshalb oft viel zu spät entdeckt.
+          </p>
+
+          <div className="mt-10 hidden max-w-sm border-l border-[#50C9E1]/40 pl-5 font-mono text-xs uppercase tracking-[0.18em] text-[#50C9E1]/70 lg:block">
+            Oberfläche ≠ Innenstruktur
+            <span className="mt-2 block text-white/40">Scrollen, um die Risikokette sichtbar zu machen</span>
+          </div>
+        </div>
+
+        <ol className="relative space-y-5 lg:space-y-7">
           {painPoints.map((point, index) => {
             const Icon = point.icon
-            return (
-              <motion.div
-                key={index}
-                className="group relative bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 hover:border-[#50C9E1]/30 transition-all duration-300"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-5 group-hover:bg-red-500/20 transition-colors">
-                  <Icon size={22} className="text-red-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-3">{point.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{point.description}</p>
+            const number = String(index + 1).padStart(2, "0")
 
-                {/* Subtle hover accent */}
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#50C9E1]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-b-2xl" />
-              </motion.div>
+            return (
+              <li
+                key={point.title}
+                data-problem-card
+                className="group relative min-h-52 overflow-hidden border border-white/10 bg-white/[0.045] p-6 backdrop-blur-sm transition-colors duration-300 hover:border-[#50C9E1]/40 hover:bg-white/[0.075] sm:p-8 lg:min-h-60"
+              >
+                <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-[#50C9E1]/70 to-transparent opacity-40 transition-opacity group-hover:opacity-100" />
+                <div className="flex items-start justify-between gap-6">
+                  <span className="font-mono text-sm tracking-[0.18em] text-[#50C9E1]">{number}</span>
+                  <Icon size={28} className="text-red-300/80" aria-hidden="true" />
+                </div>
+                <h3 className="mt-10 max-w-xl text-2xl font-semibold leading-tight sm:text-3xl">{point.title}</h3>
+                <p className="mt-4 max-w-2xl leading-relaxed text-gray-400">{point.description}</p>
+              </li>
             )
           })}
-        </div>
+        </ol>
       </div>
     </section>
   )

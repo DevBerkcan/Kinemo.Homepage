@@ -1,9 +1,7 @@
-"use client"
-
 import Link from "next/link"
+import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react"
 import { FaLinkedin, FaYoutube } from "react-icons/fa"
-import { motion } from "framer-motion"
-import React from "react"
+import ConsentSettingsButton from "@/app/components/ConsentSettingsButton"
 import {
   COMPANY_ADDRESS_LINE_1,
   COMPANY_BRAND,
@@ -16,93 +14,94 @@ import {
   COMPANY_PHONE_HREF,
 } from "@/lib/site"
 
+const navigation = [
+  ["Leistungen", "/leistungen"],
+  ["Branchen", "/branchen"],
+  ["Anwendungsfälle", "/anwendungsfaelle"],
+  ["Technologie", "/technologie"],
+  ["Referenzen", "/referenzen"],
+  ["Wissenszentrum", "/wissen"],
+  ["FAQ", "/faq"],
+  ["Über Kinemo", "/ueber-kinemo"],
+] as const
+
+const topics = [
+  ["CT für Aluminiumguss", "/ct-aluminiumguss"],
+  ["BGA-Lötstellenprüfung", "/bga-loetstellenpruefung"],
+  ["Porositätsanalyse", "/porositaetsanalyse"],
+  ["Erstmusterprüfung mit CT", "/erstmusterpruefung-ct"],
+  ["Industrielle CT Wuppertal", "/industrielle-ct/wuppertal"],
+] as const
+
+const linkClassName = "transition-colors hover:text-[#50C9E1]"
+
 export default function Footer() {
   return (
-    <motion.footer
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-      className="bg-[#063348] text-white pt-16 pb-10 px-6 w-full"
-    >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-        {/* Logo + Text + Kontakt */}
-        <div className="space-y-4">
-          <h4 className="text-2xl font-extrabold tracking-tight">
-            {COMPANY_BRAND.slice(0, 3).toUpperCase()}<span className="text-[#50C9E1]">{COMPANY_BRAND.slice(3).toUpperCase()}</span>
-          </h4>
-          <p className="text-sm leading-relaxed text-white/90">
-            Industrielle CT und Röntgenanalyse für Unternehmen, die verborgene Fehler frühzeitig erkennen wollen.
-          </p>
-          <p className="text-sm mt-4">
-            📞 <a href={COMPANY_PHONE_HREF} className="hover:text-[#50C9E1] transition-colors">{COMPANY_PHONE}</a>
-          </p>
-          <p className="text-sm">
-            📬 <a href={COMPANY_EMAIL_HREF} className="hover:text-[#50C9E1] transition-colors">{COMPANY_EMAIL}</a>
-          </p>
-          <div className="flex gap-3 mt-4">
-            <a
-              href="https://www.linkedin.com/company/kinemo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white text-[#063348] p-2 rounded-md hover:bg-[#50C9E1] hover:text-[#08415C] transition"
-            >
-              <FaLinkedin size={20} />
-            </a>
-            <a
-              href="https://www.youtube.com/@kinemo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white text-[#063348] p-2 rounded-md hover:bg-[#50C9E1] hover:text-[#08415C] transition"
-            >
-              <FaYoutube size={20} />
-            </a>
+    <footer className="w-full bg-[#04141d] px-6 pb-8 pt-16 text-white md:pt-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-12 border-b border-white/15 pb-14 lg:grid-cols-[1.35fr_0.65fr_0.65fr_0.85fr]">
+          <div>
+            <Link href="/" aria-label="Kinemo Startseite" className="inline-block text-4xl font-extrabold tracking-[-0.05em]">
+              {COMPANY_BRAND.slice(0, 3).toUpperCase()}<span className="text-[#50C9E1]">{COMPANY_BRAND.slice(3).toUpperCase()}</span>
+            </Link>
+            <p className="mt-6 max-w-sm text-base leading-relaxed text-white/60">
+              Industrielle CT und Röntgenanalyse für Unternehmen, die verborgene Fehler frühzeitig erkennen wollen.
+            </p>
+            <Link href="/kontakt" className="group mt-8 inline-flex min-h-12 items-center gap-3 border-b border-[#50C9E1] py-2 font-semibold text-[#50C9E1]">
+              Projekt besprechen
+              <ArrowUpRight aria-hidden="true" className="h-5 w-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          <nav aria-label="Footer Navigation">
+            <h2 className="mb-5 font-mono text-xs uppercase tracking-[0.22em] text-white/40">Navigation</h2>
+            <ul className="space-y-3 text-sm text-white/75">
+              {navigation.map(([label, href]) => <li key={href}><Link href={href} className={linkClassName}>{label}</Link></li>)}
+            </ul>
+          </nav>
+
+          <nav aria-label="Prüfaufgaben">
+            <h2 className="mb-5 font-mono text-xs uppercase tracking-[0.22em] text-white/40">Prüfaufgaben</h2>
+            <ul className="space-y-3 text-sm leading-relaxed text-white/75">
+              {topics.map(([label, href]) => <li key={href}><Link href={href} className={linkClassName}>{label}</Link></li>)}
+            </ul>
+          </nav>
+
+          <div>
+            <h2 className="mb-5 font-mono text-xs uppercase tracking-[0.22em] text-white/40">Kontakt & Labor</h2>
+            <address className="space-y-4 text-sm not-italic leading-relaxed text-white/75">
+              <p className="flex items-start gap-3">
+                <MapPin aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#50C9E1]" />
+                <span>{COMPANY_NAME}<br />{COMPANY_ADDRESS_LINE_1}<br />{COMPANY_CITY}<br />{COMPANY_COUNTRY}</span>
+              </p>
+              <a href={COMPANY_PHONE_HREF} className={`flex items-center gap-3 ${linkClassName}`}>
+                <Phone aria-hidden="true" className="h-4 w-4 text-[#50C9E1]" />{COMPANY_PHONE}
+              </a>
+              <a href={COMPANY_EMAIL_HREF} className={`flex items-center gap-3 ${linkClassName}`}>
+                <Mail aria-hidden="true" className="h-4 w-4 text-[#50C9E1]" />{COMPANY_EMAIL}
+              </a>
+            </address>
+
+            <div className="mt-7 flex gap-2">
+              <a href="https://www.linkedin.com/company/kinemo" target="_blank" rel="noopener noreferrer" aria-label="Kinemo auf LinkedIn (öffnet in neuem Tab)" className="flex h-11 w-11 items-center justify-center border border-white/20 text-white/75 transition-colors hover:border-[#50C9E1] hover:text-[#50C9E1]">
+                <FaLinkedin aria-hidden="true" size={19} />
+              </a>
+              <a href="https://www.youtube.com/@kinemo" target="_blank" rel="noopener noreferrer" aria-label="Kinemo auf YouTube (öffnet in neuem Tab)" className="flex h-11 w-11 items-center justify-center border border-white/20 text-white/75 transition-colors hover:border-[#50C9E1] hover:text-[#50C9E1]">
+                <FaYoutube aria-hidden="true" size={19} />
+              </a>
+            </div>
           </div>
         </div>
 
-        {/* Laboradresse */}
-        <div>
-          <h4 className="font-semibold text-lg mb-4">Labor</h4>
-          <p className="text-sm leading-relaxed">
-            {COMPANY_NAME}<br />
-            {COMPANY_ADDRESS_LINE_1}<br />
-            {COMPANY_CITY}<br />
-            {COMPANY_COUNTRY}
-          </p>
-        </div>
-
-        {/* Navigation */}
-        <div>
-          <h4 className="font-semibold text-lg mb-4">Navigation</h4>
-          <ul className="space-y-2 text-sm">
-            <li><Link href="/" className="hover:text-[#50C9E1] transition-colors">Startseite</Link></li>
-            <li><Link href="/leistungen" className="hover:text-[#50C9E1] transition-colors">Leistungen</Link></li>
-            <li><Link href="/branchen" className="hover:text-[#50C9E1] transition-colors">Branchen</Link></li>
-            <li><Link href="/anwendungsfaelle" className="hover:text-[#50C9E1] transition-colors">Anwendungsfälle</Link></li>
-            <li><Link href="/technologie" className="hover:text-[#50C9E1] transition-colors">Technologie</Link></li>
-            <li><Link href="/referenzen" className="hover:text-[#50C9E1] transition-colors">Referenzen</Link></li>
-            <li><Link href="/blog" className="hover:text-[#50C9E1] transition-colors">Blog & Wissen</Link></li>
-            <li><Link href="/kontakt" className="hover:text-[#50C9E1] transition-colors">Kontakt</Link></li>
-          </ul>
-        </div>
-
-        {/* Weiteres */}
-        <div>
-          <h4 className="font-semibold text-lg mb-4">Weiteres</h4>
-          <ul className="space-y-2 text-sm">
-            <li><Link href="/ct-aluminiumguss">CT für Aluminiumguss</Link></li>
-            <li><Link href="/bga-loetstellenpruefung">BGA-Lötstellenprüfung</Link></li>
-            <li><Link href="/porositaetsanalyse">Porositätsanalyse</Link></li>
-            <li><Link href="/erstmusterpruefung-ct">Erstmusterprüfung mit CT</Link></li>
-            <li><Link href="/impressum">Impressum</Link></li>
-            <li><Link href="/datenschutz">Datenschutzerklärung</Link></li>
+        <div className="flex flex-col gap-5 pt-7 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} Kinemo. Alle Rechte vorbehalten.</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-3">
+            <li><Link href="/impressum" className={linkClassName}>Impressum</Link></li>
+            <li><Link href="/datenschutz" className={linkClassName}>Datenschutz</Link></li>
+            <li><ConsentSettingsButton /></li>
           </ul>
         </div>
       </div>
-
-      <div className="text-center text-xs text-white/60 mt-10">
-        &copy; {new Date().getFullYear()} Kinemo. Alle Rechte vorbehalten.
-      </div>
-    </motion.footer>
+    </footer>
   )
 }

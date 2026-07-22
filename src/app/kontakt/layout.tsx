@@ -1,21 +1,12 @@
-import type { Metadata } from "next"
+import type { ReactNode } from "react"
 import { createPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Kontakt für industrielle CT und Röntgenanalyse",
-  description:
-    "Jetzt Anfrage für industrielle CT, Röntgenanalyse oder Fehleranalyse stellen. Kinemo meldet sich in der Regel innerhalb von 24 Stunden.",
+export const metadata = createPageMetadata({
+  title: "Kontakt und Analyseanfrage",
+  description: "Sprechen Sie mit Kinemo über Ihre Prüfaufgabe für industrielle CT, Röntgenanalyse oder zerstörungsfreie Prüfung.",
   path: "/kontakt",
-  keywords: [
-    "CT Anfrage",
-    "Röntgenanalyse Kontakt",
-    "Fehleranalyse anfragen",
-    "Zerstörungsfreie Prüfung Kontakt",
-  ],
 })
 
-export default function KontaktLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function KontaktLayout({ children }: { children: ReactNode }) {
   return children
 }

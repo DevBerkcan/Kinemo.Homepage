@@ -1,139 +1,42 @@
-"use client"
-
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { ArrowUpRight, Clock3, Mail } from "lucide-react"
+import DemoRequestFormFields from "./DemoRequestFormFields"
+import { COMPANY_EMAIL, COMPANY_EMAIL_HREF } from "@/lib/site"
 
 export default function DemoRequestForm() {
-  const [submitted, setSubmitted] = useState(false)
-  const [privacy, setPrivacy] = useState(false)
-  const [privacyError, setPrivacyError] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [submitError, setSubmitError] = useState("")
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!privacy) {
-      setPrivacyError(true)
-      return
-    }
-    setPrivacyError(false)
-    setSubmitError("")
-
-    const form = e.target as HTMLFormElement
-    const data = {
-      name: (form.elements.namedItem("name") as HTMLInputElement).value,
-      email: (form.elements.namedItem("email") as HTMLInputElement).value,
-      company: (form.elements.namedItem("company") as HTMLInputElement)?.value ?? "",
-      phone: (form.elements.namedItem("phone") as HTMLInputElement)?.value ?? "",
-      message: (form.elements.namedItem("message") as HTMLTextAreaElement)?.value ?? "",
-      source: "demo",
-    }
-
-    setLoading(true)
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-      if (!res.ok) throw new Error()
-      setSubmitted(true)
-    } catch {
-      setSubmitError("Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.")
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
-    <section className="bg-white dark:bg-[#05151f] py-20 px-6 border-t border-gray-200 dark:border-[#1a3a4b]">
-      <div className="max-w-3xl mx-auto text-center">
-        <h2 className="text-3xl font-bold text-[#08415C] dark:text-[#50C9E1] mb-6">
-          Jetzt unverbindlich anfragen
-        </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-10">
-          Beschreiben Sie Ihr Bauteil oder Ihre Prüfaufgabe – wir melden uns innerhalb von 24 Stunden
-          und klären gemeinsam den nächsten Schritt.
-        </p>
+    <section id="anfrage" className="relative overflow-hidden bg-[#061b26] px-6 py-24 text-white md:py-32">
+      <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-1/2 opacity-35 lg:block [background-image:linear-gradient(rgba(80,201,225,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(80,201,225,.1)_1px,transparent_1px)] [background-size:48px_48px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-32 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full border border-[#50C9E1]/20 shadow-[0_0_100px_rgba(80,201,225,.12)]" />
 
-        {!submitted ? (
-          <form onSubmit={handleSubmit} className="space-y-6 text-left">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input
-                required
-                name="name"
-                type="text"
-                placeholder="Ihr Name"
-                className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-[#1a3a4b] bg-white dark:bg-[#0f2b3b] text-gray-800 dark:text-white placeholder-gray-400"
-              />
-              <input
-                required
-                name="email"
-                type="email"
-                placeholder="E-Mail-Adresse"
-                className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-[#1a3a4b] bg-white dark:bg-[#0f2b3b] text-gray-800 dark:text-white placeholder-gray-400"
-              />
-              <input
-                name="company"
-                type="text"
-                placeholder="Unternehmen"
-                className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-[#1a3a4b] bg-white dark:bg-[#0f2b3b] text-gray-800 dark:text-white placeholder-gray-400"
-              />
-              <input
-                name="phone"
-                type="tel"
-                placeholder="Telefonnummer (optional)"
-                className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-[#1a3a4b] bg-white dark:bg-[#0f2b3b] text-gray-800 dark:text-white placeholder-gray-400"
-              />
+      <div className="relative mx-auto grid max-w-7xl gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+        <div data-motion="reveal" className="lg:sticky lg:top-32">
+          <p className="mb-5 font-mono text-xs uppercase tracking-[0.28em] text-[#50C9E1]">09 / Anfrage</p>
+          <h2 className="text-4xl font-bold leading-[0.98] tracking-[-0.045em] sm:text-5xl md:text-6xl">
+            Lassen Sie verborgene Risiken <span className="text-[#50C9E1]">sichtbar machen.</span>
+          </h2>
+          <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/65">
+            Beschreiben Sie Ihr Bauteil oder Ihre Prüfaufgabe. Wir klären gemeinsam, welches Verfahren belastbare Antworten liefert.
+          </p>
+
+          <div className="mt-10 space-y-4 border-t border-white/15 pt-7 text-sm text-white/70">
+            <div className="flex items-center gap-3">
+              <Clock3 aria-hidden="true" className="h-5 w-5 text-[#50C9E1]" />
+              Persönliche Rückmeldung in der Regel innerhalb von 24 Stunden
             </div>
+            <a href={COMPANY_EMAIL_HREF} className="group flex w-fit items-center gap-3 transition-colors hover:text-white">
+              <Mail aria-hidden="true" className="h-5 w-5 text-[#50C9E1]" />
+              {COMPANY_EMAIL}
+              <ArrowUpRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          </div>
+        </div>
 
-            <textarea
-              name="message"
-              rows={5}
-              placeholder="Welches Bauteil soll geprüft werden? Was ist Ihre Fragestellung?"
-              className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-[#1a3a4b] bg-white dark:bg-[#0f2b3b] text-gray-800 dark:text-white placeholder-gray-400"
-            />
-
-            <div className="flex items-start gap-3">
-              <input
-                type="checkbox"
-                id="demo-privacy"
-                checked={privacy}
-                onChange={(e) => { setPrivacy(e.target.checked); setPrivacyError(false) }}
-                className="mt-1 accent-[#50C9E1]"
-              />
-              <label htmlFor="demo-privacy" className="text-sm text-gray-600 dark:text-gray-400">
-                Ich habe die{" "}
-                <a href="/datenschutz" className="text-[#50C9E1] hover:underline">Datenschutzerklärung</a>
-                {" "}gelesen und stimme der Verarbeitung meiner Daten zu. <span className="text-red-500">*</span>
-              </label>
-            </div>
-            {privacyError && (
-              <p className="text-red-500 text-sm -mt-3">Bitte bestätigen Sie die Datenschutzerklärung.</p>
-            )}
-            {submitError && (
-              <p className="text-red-500 text-sm bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 rounded-lg">
-                {submitError}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full md:w-auto bg-[#FF6600] hover:bg-orange-500 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-full transition"
-            >
-              {loading ? "Wird gesendet..." : "Jetzt Analyse anfragen"}
-            </button>
-          </form>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-[#08415C] dark:text-[#50C9E1] text-lg font-semibold mt-10"
-          >
-            🎉 Vielen Dank! Wir melden uns in Kürze bei Ihnen.
-          </motion.div>
-        )}
+        <div data-motion="reveal" className="border border-white/15 bg-white/[0.04] p-5 shadow-2xl shadow-black/20 backdrop-blur-sm sm:p-8 lg:p-10">
+          <p className="mb-8 max-w-xl text-sm leading-relaxed text-white/55">
+            Ein paar technische Eckdaten genügen für den ersten Austausch. Pflichtfelder sind mit * gekennzeichnet.
+          </p>
+          <DemoRequestFormFields />
+        </div>
       </div>
     </section>
   )

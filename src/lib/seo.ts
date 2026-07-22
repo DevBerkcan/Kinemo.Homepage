@@ -8,7 +8,7 @@ import {
 
 export const SITE_URL = "https://www.kinemo.de"
 export const BRAND_NAME = COMPANY_BRAND
-export const DEFAULT_OG_IMAGE = "/og-image-xray.jpg"
+export const DEFAULT_OG_IMAGE = "/opengraph-image"
 
 export const DEFAULT_KEYWORDS = [
   "industrielle CT",
@@ -115,10 +115,12 @@ export function createBreadcrumbJsonLd(
 
 export const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "ProfessionalService"],
+  "@id": `${SITE_URL}/#organization`,
   name: BRAND_NAME,
+  legalName: "Kinemo GmbH",
   url: SITE_URL,
-  logo: absoluteUrl("/favicon.ico"),
+  logo: absoluteUrl("/01_logo_blau.png"),
   email: COMPANY_EMAIL,
   telephone: COMPANY_PHONE,
   address: {
@@ -129,17 +131,15 @@ export const organizationJsonLd = {
     addressCountry: "DE",
   },
   areaServed: "DE",
-  sameAs: [],
+  sameAs: ["https://www.linkedin.com/company/kinemo", "https://www.youtube.com/@kinemo"],
 }
 
 export const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
   name: BRAND_NAME,
   url: SITE_URL,
   inLanguage: "de-DE",
-  publisher: {
-    "@type": "Organization",
-    name: BRAND_NAME,
-  },
+  publisher: { "@id": `${SITE_URL}/#organization` },
 }

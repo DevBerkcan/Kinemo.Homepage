@@ -1,277 +1,124 @@
-"use client"
-
-import { motion } from "framer-motion"
-import { Award, Users, Target, Lightbulb, ArrowRight, Quote } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
+import { ArrowUpRight, Quote } from "lucide-react"
+
+const logos = [
+  { name: "Start-up Center", src: "/Start-up-Center-Logo-Etikett-schwarz_Ausnahme.svg" },
+  { name: "EFRE NRW", src: "/EFRE.NRW_.svg" },
+  { name: "Berg Pitch", src: "/logo-Berg-Pitch_n.png" },
+  { name: "Bergische Universität Wuppertal", src: "/BUW_Logo-weiss.png" },
+] as const
+
+const achievements = [
+  { number: "50+", label: "Zufriedene Industriekunden", description: "Von Start-ups bis Konzerne" },
+  { number: "1000+", label: "Erfolgreiche Analysen", description: "CT- und Röntgenauswertungen" },
+  { number: "5+", label: "Jahre Erfahrung", description: "In industrieller CT & ZfP" },
+  { number: "3", label: "Patente", description: "Innovative Technologielösungen" },
+] as const
+
+const expertise = [
+  "Industrielle CT & Röntgenanalyse",
+  "Zerstörungsfreie Prüfung (ZfP)",
+  "Produktentwicklung & Qualitätssicherung",
+  "Fehler- & Ursachenanalyse",
+  "Medizintechnik & Biomechanik",
+] as const
 
 export default function ImprovedAbout() {
-  const logos = [
-    { name: "Start-up Center", src: "/Start-up-Center-Logo-Etikett-schwarz_Ausnahme.svg" },
-    { name: "EFRE NRW", src: "/EFRE.NRW_.svg" },
-    { name: "Berg Pitch", src: "/logo-Berg-Pitch_n.png" },
-    { name: "BUW", src: "/BUW_Logo-weiss.png" },
-  ]
-
-  const achievements = [
-    {
-      icon: Users,
-      number: "50+",
-      label: "Zufriedene Industriekunden",
-      description: "Von Startups bis Konzerne"
-    },
-    {
-      icon: Target,
-      number: "1000+",
-      label: "Erfolgreiche Analysen",
-      description: "CT- und Röntgenauswertungen"
-    },
-    {
-      icon: Award,
-      number: "5+",
-      label: "Jahre Erfahrung",
-      description: "In industrieller CT & ZfP"
-    },
-    {
-      icon: Lightbulb,
-      number: "3",
-      label: "Patente",
-      description: "Innovative Technologielösungen"
-    }
-  ]
-
-  const expertise = [
-    "Industrielle CT & Röntgenanalyse",
-    "Zerstörungsfreie Prüfung (ZfP)",
-    "Produktentwicklung & Qualitätssicherung",
-    "Fehler- & Ursachenanalyse",
-    "Medizintechnik & Biomechanik",
-  ]
+  const metricsApproved = process.env.KINEMO_METRICS_APPROVED === "true"
 
   return (
-    <section className="bg-gradient-to-b from-[#fdfdfc] to-gray-50 dark:from-[#05151f] dark:to-[#061b26] text-[#1a1a1a] dark:text-white py-24 px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Header */}
-        <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-[#08415C] dark:text-[#50C9E1] mb-6">
-            Der Kopf hinter <span className="text-[#50C9E1]">Kinemo</span>
+    <section id="ueber-kinemo" className="scroll-mt-24 overflow-hidden bg-[#f7f8f7] px-6 py-24 text-[#17394a] dark:bg-[#05151f] dark:text-white md:py-32">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-14 grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-end">
+          <p data-motion="reveal" className="font-mono text-xs uppercase tracking-[0.28em] text-[#0b8ca7] dark:text-[#50C9E1]">08 / Gründer</p>
+          <h2 data-motion="reveal" className="max-w-4xl text-4xl font-bold leading-[1.02] tracking-[-0.045em] text-[#08415C] dark:text-white md:text-6xl">
+            Ingenieurwissen trifft auf den Blick für das Verborgene.
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Innovation entsteht dort, wo Leidenschaft auf Expertise trifft – 
-            lernen Sie die Vision kennen, die Kinemo antreibt.
-          </p>
-        </motion.div>
-
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-          
-          {/* Enhanced Image Section */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative">
-              {/* Background decoration */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-[#50C9E1]/20 to-[#08415C]/20 rounded-2xl blur-xl"></div>
-              
-              {/* Main image */}
-              <div className="relative bg-white dark:bg-[#0f2b3b] p-2 rounded-2xl shadow-2xl">
-                <Image
-                  src="/sercan-atesoglu.jpeg"
-                  alt="Sercan Atesoglu, Gründer von Kinemo"
-                  width={600}
-                  height={600}
-                  className="w-full h-auto rounded-xl object-cover aspect-square"
-                />
-                
-                {/* Floating badge */}
-                <div className="absolute -bottom-4 -right-4 bg-[#50C9E1] text-[#08415C] px-4 py-2 rounded-full font-semibold text-sm shadow-lg">
-                  🚀 CEO & Gründer
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Enhanced Text Section */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <div className="inline-flex items-center gap-2 bg-[#50C9E1]/10 text-[#50C9E1] px-4 py-2 rounded-full text-sm font-medium">
-              <Target size={16} />
-              Sercan Atesoglu
-            </div>
-
-            <h3 className="text-3xl md:text-4xl font-bold text-[#08415C] dark:text-white leading-tight">
-              Verborgene Fehler sichtbar machen – das ist unsere Mission
-            </h3>
-
-            <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-              <p>
-                Als Ingenieur und Gründer entwickelte ich Kinemo aus der Überzeugung heraus, dass
-                <strong className="text-[#08415C] dark:text-[#50C9E1]"> viele teure Fehler vermeidbar wären, wenn man früh genug ins Innere schaut</strong>.
-              </p>
-
-              <p>
-                Meine Expertise in Biomechanik und industrieller Bildgebung hat mir gezeigt: Innere
-                Strukturfehler sind mit konventionellen Methoden schlicht nicht erkennbar –
-                industrielle CT und Röntgenanalyse schon.
-              </p>
-
-              <p>
-                Heute unterstützt Kinemo Entwicklungs- und Qualitätsteams dabei, verborgene Fehler
-                frühzeitig zu erkennen – <strong className="text-[#50C9E1]">bevor sie Zeit, Geld und Nerven kosten</strong>.
-              </p>
-            </div>
-
-            {/* Expertise Tags */}
-            <div>
-              <h4 className="text-sm font-semibold text-[#08415C] dark:text-[#50C9E1] mb-3 uppercase tracking-wider">
-                Expertise
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {expertise.map((skill, idx) => (
-                  <span 
-                    key={idx}
-                    className="px-3 py-1 bg-white dark:bg-[#0f2b3b] text-sm text-gray-700 dark:text-gray-300 rounded-full border border-gray-200 dark:border-gray-600"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div className="pt-4">
-              <a
-                href="/kontakt"
-                className="inline-flex items-center gap-2 bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-6 py-3 rounded-full transition-all duration-200 shadow-md hover:shadow-lg"
-              >
-                Persönliches Gespräch vereinbaren
-                <ArrowRight size={18} />
-              </a>
-            </div>
-          </motion.div>
         </div>
 
-        {/* Enhanced Mission Statement */}
-        <motion.div
-          className="relative mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="bg-gradient-to-r from-[#08415C] to-[#0C5374] rounded-3xl p-12 text-white relative overflow-hidden">
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#50C9E1]/10 rounded-full -translate-y-32 translate-x-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#50C9E1]/10 rounded-full translate-y-24 -translate-x-24"></div>
-            
-            <div className="relative z-10 text-center max-w-4xl mx-auto">
-              <Quote size={48} className="text-[#50C9E1] mx-auto mb-6 opacity-50" />
-              <blockquote className="text-2xl md:text-3xl font-medium leading-relaxed mb-6">
-                "Jeder Fehler, der in der Entwicklung erkannt wird, ist ein Fehler, der nicht im Feld auftritt.
-                Das ist der Mehrwert, den wir für unsere Kunden schaffen."
-              </blockquote>
-              <cite className="text-[#50C9E1] font-semibold">— Sercan Atesoglu, Gründer & CEO</cite>
+        <div className="grid gap-10 border-y border-[#08415C]/15 py-10 dark:border-white/15 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:py-16">
+          <figure data-motion="reveal" className="relative">
+            <div className="relative aspect-[4/5] overflow-hidden bg-[#08415C]">
+              <Image
+                src="/sercan-atesoglu.jpeg"
+                alt="Sercan Atesoglu, Gründer von Kinemo"
+                fill
+                sizes="(min-width: 1024px) 38vw, 100vw"
+                className="object-cover object-center grayscale-[20%]"
+              />
+              <div aria-hidden="true" className="absolute inset-x-0 top-1/3 h-px bg-[#50C9E1]/70 shadow-[0_0_18px_rgba(80,201,225,.8)]" />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#061b26] to-transparent p-6 pt-24 text-white">
+                <span className="block text-xl font-semibold">Sercan Atesoglu</span>
+                <span className="mt-1 block font-mono text-xs uppercase tracking-[0.2em] text-[#50C9E1]">Gründer & CEO</span>
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </figure>
 
-        {/* Enhanced Achievements */}
-        <motion.div
-          className="mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-2xl font-bold text-center text-[#08415C] dark:text-white mb-12">
-            Zahlen, die für sich sprechen
-          </h3>
-          
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {achievements.map((achievement, idx) => (
-              <motion.div
-                key={idx}
-                className="text-center group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="bg-white dark:bg-[#0f2b3b] p-6 rounded-2xl shadow-md group-hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700">
-                  <div className="w-12 h-12 bg-[#50C9E1]/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-[#50C9E1]/20 transition-colors">
-                    <achievement.icon className="w-6 h-6 text-[#50C9E1]" />
-                  </div>
-                  <div className="text-3xl font-bold text-[#08415C] dark:text-[#50C9E1] mb-2">
-                    {achievement.number}
-                  </div>
-                  <div className="font-semibold text-gray-900 dark:text-white mb-1">
-                    {achievement.label}
-                  </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    {achievement.description}
-                  </div>
-                </div>
-              </motion.div>
+          <div data-motion="reveal" className="flex flex-col justify-center">
+            <h3 className="text-3xl font-semibold leading-tight tracking-[-0.03em] text-[#08415C] dark:text-white md:text-4xl">
+              Verborgene Fehler sichtbar machen – das ist unsere Mission.
+            </h3>
+            <div className="mt-7 space-y-5 text-lg leading-relaxed text-gray-600 dark:text-white/65">
+              <p>
+                Als Ingenieur und Gründer entwickelte ich Kinemo aus der Überzeugung heraus, dass viele teure Fehler vermeidbar wären, wenn man früh genug ins Innere schaut.
+              </p>
+              <p>
+                Meine Expertise in Biomechanik und industrieller Bildgebung hat mir gezeigt: Innere Strukturfehler sind mit konventionellen Methoden schlicht nicht erkennbar – industrielle CT und Röntgenanalyse schon.
+              </p>
+              <p>
+                Heute unterstützt Kinemo Entwicklungs- und Qualitätsteams dabei, verborgene Fehler frühzeitig zu erkennen – bevor sie Zeit, Geld und Nerven kosten.
+              </p>
+            </div>
+
+            <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-3" aria-label="Fachgebiete">
+              {expertise.map((skill) => (
+                <li key={skill} className="border-l-2 border-[#50C9E1] pl-3 text-sm text-[#08415C] dark:text-white/75">{skill}</li>
+              ))}
+            </ul>
+
+            <Link href="/kontakt" className="group mt-10 inline-flex min-h-12 w-fit items-center gap-3 border-b border-[#0b8ca7] py-2 font-semibold text-[#0b8ca7] dark:border-[#50C9E1] dark:text-[#50C9E1]">
+              Persönliches Gespräch vereinbaren
+              <ArrowUpRight aria-hidden="true" className="h-5 w-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+            </Link>
+          </div>
+        </div>
+
+        <figure data-motion="reveal" className="relative my-16 border-l-2 border-[#50C9E1] py-4 pl-7 md:my-24 md:pl-12">
+          <Quote aria-hidden="true" className="mb-5 h-8 w-8 text-[#0b8ca7] dark:text-[#50C9E1]" />
+          <blockquote className="max-w-5xl text-2xl font-medium leading-relaxed tracking-[-0.02em] text-[#08415C] dark:text-white md:text-4xl">
+            „Jeder Fehler, der in der Entwicklung erkannt wird, ist ein Fehler, der nicht im Feld auftritt. Das ist der Mehrwert, den wir für unsere Kunden schaffen.“
+          </blockquote>
+          <figcaption className="mt-6 font-mono text-xs uppercase tracking-[0.2em] text-gray-500 dark:text-white/50">Sercan Atesoglu · Gründer & CEO</figcaption>
+        </figure>
+
+        {metricsApproved && (
+          <div data-motion="stagger" className="grid border-y border-[#08415C]/15 dark:border-white/15 sm:grid-cols-2 lg:grid-cols-4">
+            {achievements.map((achievement) => (
+              <div key={achievement.label} className="border-b border-[#08415C]/15 py-7 sm:px-6 sm:[&:nth-child(odd)]:border-r dark:border-white/15 lg:border-b-0 lg:border-r lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0">
+                <span className="block text-4xl font-bold tracking-[-0.04em] text-[#08415C] dark:text-[#50C9E1]">{achievement.number}</span>
+                <span className="mt-3 block font-semibold">{achievement.label}</span>
+                <span className="mt-1 block text-sm text-gray-500 dark:text-white/45">{achievement.description}</span>
+              </div>
             ))}
           </div>
-        </motion.div>
+        )}
 
-        {/* Enhanced Partner Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold text-[#08415C] dark:text-[#50C9E1] mb-4">
-              Unterstützt von führenden Institutionen
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Vertrauensvolle Partnerschaften mit renommierten Organisationen ermöglichen es uns, 
-              kontinuierlich zu innovieren und zu wachsen.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-[#0f2b3b] rounded-2xl p-8 shadow-md border border-gray-100 dark:border-gray-700">
-            <div className="flex flex-wrap justify-center items-center gap-12">
-              {logos.map((logo, idx) => (
-                <motion.div
-                  key={idx}
-                  className="grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300 transform hover:scale-105"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 0.7, y: 0 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ opacity: 1 }}
-                >
-                  <Image
-                    src={logo.src}
-                    alt={logo.name}
-                    width={160}
-                    height={48}
-                    className="h-12 w-auto object-contain"
-                  />
-                </motion.div>
-              ))}
+        <div data-motion="reveal" className="mt-16 bg-[#08415C] px-6 py-9 text-white md:mt-24 md:px-10">
+          <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#50C9E1]">Institutionelles Umfeld</p>
+              <h3 className="mt-3 text-2xl font-semibold">Netzwerk für Forschung und Innovation</h3>
             </div>
+            <ul className="grid grid-cols-2 items-center gap-7 sm:grid-cols-4" aria-label="Institutionen im Kinemo-Umfeld">
+              {logos.map((logo) => (
+                <li key={logo.name} className={`flex min-h-16 items-center justify-center p-3 ${logo.name === "Bergische Universität Wuppertal" ? "bg-[#061b26]" : "bg-white/95"}`}>
+                  <Image src={logo.src} alt={logo.name} width={160} height={56} className="max-h-10 w-auto object-contain" />
+                </li>
+              ))}
+            </ul>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

@@ -1,92 +1,70 @@
-"use client"
-
 import Link from "next/link"
-import { motion } from "framer-motion"
-import { ArrowRight, Cpu, Layers, ScanSearch, CircuitBoard } from "lucide-react"
+import { ArrowUpRight, CircuitBoard, Cpu, Layers, ScanSearch } from "lucide-react"
 
 const seoLandings = [
   {
     title: "CT für Aluminiumguss",
     href: "/ct-aluminiumguss",
-    description:
-      "Lunker, Poren und Einschlüsse in Aluminiumgussteilen frühzeitig mit industrieller CT erkennen.",
+    description: "Lunker, Poren und Einschlüsse in Aluminiumgussteilen frühzeitig mit industrieller CT erkennen.",
     icon: ScanSearch,
+    code: "CT.01",
   },
   {
     title: "BGA-Lötstellenprüfung",
     href: "/bga-loetstellenpruefung",
-    description:
-      "2D-Röntgen und CT für die Analyse von BGAs, Voids, kalten Lötstellen und Fehlpositionierungen.",
+    description: "2D-Röntgen und CT für die Analyse von BGAs, Voids, kalten Lötstellen und Fehlpositionierungen.",
     icon: CircuitBoard,
+    code: "XR.02",
   },
   {
     title: "Porositätsanalyse",
     href: "/porositaetsanalyse",
-    description:
-      "Porositäten, Lunker und Hohlräume quantitativ bewerten und dokumentieren.",
+    description: "Porositäten, Lunker und Hohlräume quantitativ bewerten und dokumentieren.",
     icon: Layers,
+    code: "CT.03",
   },
   {
     title: "Erstmusterprüfung mit CT",
     href: "/erstmusterpruefung-ct",
-    description:
-      "Innere Strukturen, Wandstärken und Soll-Ist-Abweichungen vor Serienfreigabe absichern.",
+    description: "Innere Strukturen, Wandstärken und Soll-Ist-Abweichungen vor Serienfreigabe absichern.",
     icon: Cpu,
+    code: "CT.04",
   },
-]
+] as const
 
 export default function SeoLandingGrid() {
   return (
-    <section className="bg-gray-50 dark:bg-[#0b2230] py-24 px-6">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          className="text-center mb-14"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#50C9E1] mb-3">
-            Häufig gesucht
+    <section id="pruefaufgaben" className="scroll-mt-24 bg-[#f4f7f8] px-6 py-24 dark:bg-[#0b2230] md:py-32">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-14 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+          <div data-motion="reveal">
+            <p className="mb-4 font-mono text-xs uppercase tracking-[0.28em] text-[#0b8ca7] dark:text-[#50C9E1]">04 / Prüfaufgaben</p>
+            <h2 className="text-4xl font-bold leading-[1.02] tracking-[-0.04em] text-[#08415C] dark:text-white md:text-6xl">
+              Präzise Antworten auf konkrete Fragen.
+            </h2>
+          </div>
+          <p data-motion="reveal" className="max-w-2xl text-lg leading-relaxed text-gray-600 dark:text-gray-300 lg:justify-self-end">
+            Direkter Einstieg in häufige Aufgaben aus Entwicklung, Qualitätssicherung und Fertigung – mit dem passenden Prüfverfahren und klarer technischer Einordnung.
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#08415C] dark:text-white mb-5">
-            Lösungen für konkrete Prüfaufgaben
-          </h2>
-          <p className="max-w-3xl mx-auto text-lg text-gray-600 dark:text-gray-300">
-            Diese Seiten beantworten häufige Suchanfragen aus Entwicklung, Qualitätssicherung und Fertigung mit konkretem Bezug zu industrieller CT und Röntgenanalyse.
-          </p>
-        </motion.div>
+        </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {seoLandings.map((item, index) => {
+        <div data-motion="stagger" className="border-t border-[#08415C]/20 dark:border-white/15">
+          {seoLandings.map((item) => {
             const Icon = item.icon
             return (
-              <motion.div
+              <Link
                 key={item.href}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: index * 0.08 }}
-                viewport={{ once: true }}
+                href={item.href}
+                className="group grid min-h-40 gap-5 border-b border-[#08415C]/20 py-7 transition-colors hover:bg-white/70 dark:border-white/15 dark:hover:bg-white/[0.03] sm:grid-cols-[5rem_1fr] lg:grid-cols-[6rem_0.9fr_1.1fr_3rem] lg:items-center lg:px-5"
               >
-                <Link
-                  href={item.href}
-                  className="group block h-full rounded-2xl border border-gray-200 dark:border-[#1f3a4b] bg-white dark:bg-[#061b26] p-6 shadow-sm hover:shadow-xl hover:border-[#50C9E1]/50 transition-all duration-300"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-[#08415C]/8 dark:bg-[#50C9E1]/10 flex items-center justify-center mb-5">
-                    <Icon size={22} className="text-[#08415C] dark:text-[#50C9E1]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#08415C] dark:text-white mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300 mb-5">
-                    {item.description}
-                  </p>
-                  <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#50C9E1]">
-                    Mehr erfahren
-                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </motion.div>
+                <div className="flex items-center gap-3 font-mono text-xs text-[#0b8ca7] dark:text-[#50C9E1]">
+                  <Icon aria-hidden="true" className="h-5 w-5" />
+                  {item.code}
+                </div>
+                <h3 className="text-2xl font-semibold tracking-tight text-[#08415C] dark:text-white md:text-3xl">{item.title}</h3>
+                <p className="max-w-xl text-sm leading-relaxed text-gray-600 sm:col-start-2 dark:text-gray-300 lg:col-start-auto lg:text-base">{item.description}</p>
+                <ArrowUpRight aria-hidden="true" className="hidden h-6 w-6 text-[#08415C]/30 transition duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#0b8ca7] dark:text-white/30 dark:group-hover:text-[#50C9E1] lg:block" />
+              </Link>
             )
           })}
         </div>

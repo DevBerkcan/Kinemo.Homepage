@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kinemo Homepage
 
-## Getting Started
+Marketing-Website der Kinemo GmbH für industrielle CT- und Röntgenanalyse. Die Anwendung basiert auf Next.js mit App Router, React, TypeScript und Tailwind CSS.
 
-First, run the development server:
+## Lokale Entwicklung
+
+Voraussetzungen:
+
+- Node.js 22 (`.nvmrc`)
+- npm
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Die Website ist anschließend unter `http://localhost:3000` erreichbar.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Umgebungsvariablen
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+Copy-Item .env.example .env.local
+```
 
-## Learn More
+Die SMTP-Werte werden erst beim Versand einer Anfrage benötigt. Der Produktions-Build läuft bewusst ohne Secrets. Microsoft Clarity wird ausschließlich nach einer Einwilligung geladen; die öffentliche Projekt-ID kann über `NEXT_PUBLIC_CLARITY_PROJECT_ID` überschrieben werden.
 
-To learn more about Next.js, take a look at the following resources:
+Testimonials und Fallstudien bleiben standardmäßig ausgeblendet, bis Namen, Zitate und Unternehmenszuordnungen dokumentiert freigegeben wurden. Erst danach darf `REFERENCE_CONTENT_APPROVED=true` gesetzt werden. Dasselbe gilt für die Kennzahlen im Gründerbereich über `KINEMO_METRICS_APPROVED=true`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Qualitätsprüfungen
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run typecheck
+npm run lint
+npm run build
+npm run check
+npm audit --audit-level=low
+```
 
-## Deploy on Vercel
+`npm run check` führt TypeScript, ESLint und den Produktions-Build nacheinander aus.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## CI/CD
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+GitHub Actions prüft Pull Requests und Pushes auf `main` mit Node.js 22:
+
+1. reproduzierbare Installation über `npm ci`
+2. TypeScript
+3. ESLint
+4. Produktions-Build
+5. Security-Audit der Produktionsabhängigkeiten
+
+Dependabot erstellt wöchentlich gebündelte Pull Requests für npm-Abhängigkeiten und monatlich für GitHub Actions.
+
+Das Deployment kann über die Vercel-Git-Integration erfolgen. Ein eigenes CLI-Deployment benötigt die GitHub-Secrets `VERCEL_TOKEN`, `VERCEL_ORG_ID` und `VERCEL_PROJECT_ID` und ist derzeit bewusst nicht im Workflow aktiviert.
+
+## Wichtige Verzeichnisse
+
+- `src/app` – App-Router-Seiten, Layouts und Route Handler
+- `src/app/api/contact` – validierter Kontakt- und Terminversand
+- `src/lib` – gemeinsame Daten-, SEO- und Formularlogik
+- `public` – statische Assets

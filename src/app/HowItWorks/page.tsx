@@ -1,9 +1,8 @@
-"use client"
-
 import Link from "next/link"
 import { createBreadcrumbJsonLd } from "@/lib/seo"
 
 export default function HowItWorks() {
+  const metricsApproved = process.env.KINEMO_METRICS_APPROVED === "true"
   const breadcrumbSchema = createBreadcrumbJsonLd([
     { name: "Startseite", path: "/" },
     { name: "How It Works", path: "/HowItWorks" },
@@ -34,14 +33,11 @@ export default function HowItWorks() {
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto aspect-video mb-16 rounded-xl overflow-hidden shadow-xl">
-          <iframe
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="Kinemo Erklärvideo"
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+        <div className="max-w-5xl mx-auto mb-16 rounded-xl bg-gradient-to-br from-[#08415C] to-[#061b26] px-6 py-12 text-center text-white shadow-xl md:px-12">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#50C9E1]">Von der Frage zur Entscheidung</p>
+          <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-white/90">
+            Wir übersetzen Ihre Prüfaufgabe in einen klaren Analyseplan und liefern nachvollziehbare Ergebnisse statt unkommentierter Bilddaten.
+          </p>
         </div>
 
         <div className="max-w-3xl mx-auto">
@@ -58,18 +54,21 @@ export default function HowItWorks() {
 
           <div className="mt-10 text-center">
             <Link
-              href="/downloads/Kinemo-Analyse-Beispiel.pdf"
-              target="_blank"
+              href="/kontakt"
               className="inline-flex max-w-full items-center justify-center px-5 py-3 md:px-6 bg-white dark:bg-[#0f2b3b] border border-[#50C9E1] text-[#08415C] dark:text-[#50C9E1] rounded-full shadow hover:bg-[#f3fdff] dark:hover:bg-[#193c4d] transition text-center text-sm md:text-base"
             >
-              📄 Beispiel-Auswertung als PDF ansehen
+              Beispiel-Auswertung persönlich anfragen
             </Link>
           </div>
         </div>
 
         <div className="mt-20 md:mt-24 bg-[#08415C] text-white py-10 md:py-12 px-5 md:px-6 rounded-xl max-w-5xl mx-auto text-center">
           <h3 className="text-2xl font-bold mb-4">Bereit für die nächste Entwicklungsstufe?</h3>
-          <p className="mb-6 text-white/90 text-sm md:text-base">Über 50+ Unternehmen aus Industrie & Medizintechnik setzen bereits auf Kinemo. Fordern Sie jetzt eine unverbindliche Analyse an und entdecken Sie, was in Ihrem Produkt steckt.</p>
+          <p className="mb-6 text-white/90 text-sm md:text-base">
+            {metricsApproved
+              ? "Über 50+ Unternehmen aus Industrie & Medizintechnik setzen bereits auf Kinemo. Fordern Sie jetzt eine unverbindliche Analyse an und entdecken Sie, was in Ihrem Produkt steckt."
+              : "Fordern Sie jetzt eine unverbindliche Analyse an und entdecken Sie, welche Informationen in Ihrem Produkt sichtbar werden können."}
+          </p>
           <Link
             href="/kontakt"
             className="inline-flex max-w-full items-center justify-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-6 md:px-8 py-3 rounded-full transition text-center"

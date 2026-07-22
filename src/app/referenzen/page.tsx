@@ -1,13 +1,12 @@
-import Navbar from "@components/navigationsbar"
-import Footer from "@components/Footer"
-import Link from "next/link"
-import { ArrowRight, CheckCircle, Building2 } from "lucide-react"
+import { CheckCircle, ShieldCheck } from "lucide-react"
+import PageCta from "@/app/components/PageCta"
+import PageHero from "@/app/components/PageHero"
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 
 export const metadata = createPageMetadata({
-  title: "Referenzen und Case Studies für industrielle CT",
+  title: "Referenzen und Projekteinblicke für industrielle CT",
   description:
-    "Praxisbeispiele aus Automotive, Elektronik, Medizintechnik und Kunststoff: Wie Kinemo verborgene Fehler früh erkennt und Entwicklungsrisiken reduziert.",
+    "Freigegebene Projekteinblicke zur industriellen CT, Röntgenanalyse und zerstörungsfreien Prüfung bei Kinemo.",
   path: "/referenzen",
   keywords: ["Case Studies industrielle CT", "Referenzen Röntgenanalyse", "Praxisbeispiele ZfP"],
 })
@@ -80,6 +79,7 @@ const caseStudies = [
 ]
 
 export default function ReferenzenPage() {
+  const referenceContentApproved = process.env.REFERENCE_CONTENT_APPROVED === "true"
   const breadcrumbSchema = createBreadcrumbJsonLd([
     { name: "Startseite", path: "/" },
     { name: "Referenzen", path: "/referenzen" },
@@ -91,34 +91,20 @@ export default function ReferenzenPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <Navbar />
       <main className="bg-white dark:bg-[#061b26] text-gray-900 dark:text-white">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-[#08415C] to-[#061b26] text-white py-24 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-[#50C9E1]/10 text-[#50C9E1] px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Building2 size={16} />
-              Referenzen & Case Studies
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Echte Ergebnisse aus der Praxis
-            </h1>
-            <p className="text-lg text-gray-200 max-w-3xl mx-auto">
-              Konkrete Praxisbeispiele zeigen, wie industrielle CT und Röntgenanalyse
-              Unternehmen dabei helfen, verborgene Fehler frühzeitig zu erkennen –
-              und welchen Unterschied das macht.
-            </p>
-            <p className="text-sm text-gray-400 mt-4">
-              Alle Fallbeispiele sind auf ausdrücklichen Wunsch der Kunden anonymisiert.
-            </p>
-          </div>
-        </section>
+        <PageHero
+          eyebrow="Projekteinblicke"
+          title="Prüfergebnisse brauchen Kontext – und eine dokumentierte Freigabe."
+          description="Hier veröffentlichen wir ausschließlich Projekteinblicke, deren Inhalte für die externe Kommunikation bestätigt wurden."
+          code="REFERENCES / VERIFIED"
+          ctaLabel="Eigene Prüfaufgabe besprechen"
+        />
 
-        {/* Case Studies */}
+        {referenceContentApproved ? (
         <section className="py-24 px-6">
           <div className="max-w-6xl mx-auto space-y-20">
-            {caseStudies.map((cs, index) => (
-              <div key={index} className="border-b border-gray-100 dark:border-gray-800 pb-20 last:border-0">
+            {caseStudies.map((cs) => (
+              <div key={cs.title} className="border-b border-gray-100 dark:border-gray-800 pb-20 last:border-0">
                 {/* Header */}
                 <div className="flex flex-wrap items-center gap-3 mb-5">
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${cs.color}`}>
@@ -137,8 +123,8 @@ export default function ReferenzenPage() {
                     { label: "Ziel", text: cs.goal, accent: "border-blue-300 dark:border-blue-700" },
                     { label: "Analyseansatz", text: cs.approach, accent: "border-[#50C9E1]/50" },
                     { label: "Erkenntnisse", text: cs.findings, accent: "border-orange-300 dark:border-orange-700" },
-                  ].map((block, i) => (
-                    <div key={i} className={`bg-gray-50 dark:bg-[#0f2b3b] rounded-2xl p-6 border-l-4 ${block.accent}`}>
+                  ].map((block) => (
+                    <div key={block.label} className={`bg-gray-50 dark:bg-[#0f2b3b] rounded-2xl p-6 border-l-4 ${block.accent}`}>
                       <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">{block.label}</h3>
                       <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{block.text}</p>
                     </div>
@@ -158,8 +144,8 @@ export default function ReferenzenPage() {
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2">
-                  {cs.tags.map((tag, i) => (
-                    <span key={i} className="px-3 py-1 rounded-full text-xs bg-[#08415C]/8 dark:bg-[#50C9E1]/10 text-[#08415C] dark:text-[#50C9E1] font-medium">
+                  {cs.tags.map((tag) => (
+                    <span key={tag} className="px-3 py-1 rounded-full text-xs bg-[#08415C]/8 dark:bg-[#50C9E1]/10 text-[#08415C] dark:text-[#50C9E1] font-medium">
                       {tag}
                     </span>
                   ))}
@@ -168,27 +154,27 @@ export default function ReferenzenPage() {
             ))}
           </div>
         </section>
+        ) : (
+          <section className="px-6 py-20 md:py-28">
+            <div data-motion="reveal" className="mx-auto grid max-w-5xl gap-8 border border-[#08415C]/15 bg-[#08415C]/[0.035] p-8 dark:border-white/10 dark:bg-white/[0.035] md:grid-cols-[auto_1fr] md:p-12">
+              <div className="flex h-14 w-14 items-center justify-center bg-[#08415C] text-[#50C9E1]">
+                <ShieldCheck aria-hidden="true" className="h-7 w-7" />
+              </div>
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#1f9cb1] dark:text-[#50C9E1]">Freigabestatus</p>
+                <h2 className="mt-3 text-2xl font-bold tracking-[-0.025em] text-[#08415C] dark:text-white md:text-3xl">Projektdetails werden nach dokumentierter Freigabe veröffentlicht.</h2>
+                <p className="mt-4 max-w-3xl leading-relaxed text-gray-600 dark:text-gray-300">Bis dahin verzichten wir bewusst auf Kundennamen, Ergebniszahlen und nicht bestätigte Fallstudien. Eine konkrete Prüfaufgabe können wir unabhängig davon vertraulich mit Ihnen besprechen.</p>
+              </div>
+            </div>
+          </section>
+        )}
 
-        {/* CTA */}
-        <section className="bg-gradient-to-r from-[#08415C] to-[#0C5374] text-white py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ihr Anwendungsfall könnte der nächste sein.
-            </h2>
-            <p className="text-gray-200 mb-8 text-lg">
-              Sprechen Sie uns an – unverbindlich und unkompliziert.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-8 py-4 rounded-full transition-all gap-2"
-            >
-              Jetzt Analyse anfragen
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </section>
+        <PageCta
+          title="Ihr Bauteil. Ihre Fragestellung. Ein belastbarer Prüfplan."
+          description="Sprechen Sie vertraulich mit uns über Material, Geometrie und den gewünschten Erkenntnisgewinn."
+          label="Analyse anfragen"
+        />
       </main>
-      <Footer />
     </>
   )
 }

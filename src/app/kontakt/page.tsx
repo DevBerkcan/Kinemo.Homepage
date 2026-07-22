@@ -1,15 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import Navbar from "@components/navigationsbar"
-import Footer from "@components/Footer"
 import { Phone, Mail, MapPin, Clock, CheckCircle } from "lucide-react"
-import { createBreadcrumbJsonLd, organizationJsonLd } from "@/lib/seo"
+import { createBreadcrumbJsonLd } from "@/lib/seo"
 import { COMPANY_ADDRESS_FULL, COMPANY_EMAIL, COMPANY_EMAIL_HREF, COMPANY_PHONE, COMPANY_PHONE_HREF } from "@/lib/site"
+import { submitInquiry } from "@/lib/inquiry"
+import PageHero from "@/app/components/PageHero"
 
 export default function KontaktPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", message: "", privacy: false })
+  const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", message: "", privacy: false, website: "" })
   const [success, setSuccess] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [loading, setLoading] = useState(false)
@@ -50,16 +49,11 @@ export default function KontaktPage() {
     setErrors({})
     setLoading(true)
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, source: "kontakt" }),
-      })
-      if (!res.ok) throw new Error("Fehler beim Senden")
+      await submitInquiry({ ...form, source: "kontakt" })
       setSuccess(true)
-      setForm({ name: "", email: "", phone: "", company: "", message: "", privacy: false })
-    } catch {
-      setErrors({ submit: "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail." })
+      setForm({ name: "", email: "", phone: "", company: "", message: "", privacy: false, website: "" })
+    } catch (error) {
+      setErrors({ submit: error instanceof Error ? error.message : "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt per E-Mail." })
     } finally {
       setLoading(false)
     }
@@ -77,7 +71,7 @@ export default function KontaktPage() {
     url: "https://www.kinemo.de/kontakt",
     description:
       "Kontaktseite für Anfragen zu industrieller CT, Röntgenanalyse und zerstörungsfreier Prüfung.",
-    mainEntity: organizationJsonLd,
+    mainEntity: { "@id": "https://www.kinemo.de/#organization" },
   }
 
   return (
@@ -90,23 +84,13 @@ export default function KontaktPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }}
       />
-      <Navbar />
       <main className="bg-white dark:bg-[#061b26] text-gray-900 dark:text-white">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-[#08415C] to-[#061b26] text-white py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-sm text-[#50C9E1] font-semibold uppercase tracking-widest mb-3">
-              Kontakt aufnehmen
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Jetzt Analyse anfragen
-            </h1>
-            <p className="text-lg text-gray-200 max-w-2xl mx-auto">
-              Beschreiben Sie Ihr Bauteil und Ihre Fragestellung – wir melden uns in der Regel
-              innerhalb von 24 Stunden und klären gemeinsam den nächsten Schritt.
-            </p>
-          </div>
-        </section>
+        <PageHero
+          eyebrow="Direkter Kontakt"
+          title="Ihre Prüfaufgabe beginnt mit einem klaren Gespräch."
+          description="Beschreiben Sie Bauteil, Material und Fragestellung. Wir ordnen die Aufgabe ein und klären gemeinsam den sinnvollen nächsten Schritt."
+          code="CONTACT / INQUIRY"
+        />
 
         <section className="py-20 px-6">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
@@ -127,10 +111,10 @@ export default function KontaktPage() {
                   { icon: Mail, label: "E-Mail", value: COMPANY_EMAIL, href: COMPANY_EMAIL_HREF },
                   { icon: MapPin, label: "Labor", value: COMPANY_ADDRESS_FULL },
                   { icon: Clock, label: "Antwortzeit", value: "In der Regel innerhalb von 24h" },
-                ].map((item, i) => {
+                ].map((item) => {
                   const Icon = item.icon
                   return (
-                    <div key={i} className="flex items-start gap-4">
+                    <div key={item.label} className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-xl bg-[#08415C]/10 dark:bg-[#50C9E1]/10 flex items-center justify-center flex-shrink-0">
                         <Icon size={18} className="text-[#08415C] dark:text-[#50C9E1]" />
                       </div>
@@ -157,8 +141,8 @@ export default function KontaktPage() {
                     "Welche Fragestellung steht im Vordergrund?",
                     "Welches Analyseverfahren ist am besten geeignet?",
                     "Wie ist der zeitliche Rahmen?",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
                       <CheckCircle size={15} className="text-[#50C9E1] flex-shrink-0 mt-0.5" />
                       {item}
                     </li>
@@ -176,12 +160,16 @@ export default function KontaktPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
+                      id="contact-name"
                       name="name"
+                      autoComplete="name"
+                      maxLength={100}
+                      required
                       value={form.name}
                       onChange={handleChange}
                       placeholder="Vor- und Nachname"
@@ -190,12 +178,16 @@ export default function KontaktPage() {
                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="contact-company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Unternehmen <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
+                      id="contact-company"
                       name="company"
+                      autoComplete="organization"
+                      maxLength={120}
+                      required
                       value={form.company}
                       onChange={handleChange}
                       placeholder="Muster GmbH"
@@ -207,12 +199,16 @@ export default function KontaktPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="contact-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       E-Mail <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="email"
+                      id="contact-email"
                       name="email"
+                      autoComplete="email"
+                      maxLength={254}
+                      required
                       value={form.email}
                       onChange={handleChange}
                       placeholder="max@muster.de"
@@ -221,12 +217,15 @@ export default function KontaktPage() {
                     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="contact-phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Telefon
                     </label>
                     <input
                       type="tel"
+                      id="contact-phone"
                       name="phone"
+                      autoComplete="tel"
+                      maxLength={50}
                       value={form.phone}
                       onChange={handleChange}
                       placeholder="+49 ..."
@@ -236,16 +235,31 @@ export default function KontaktPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="contact-message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Ihre Anfrage
                   </label>
                   <textarea
+                    id="contact-message"
                     name="message"
+                    maxLength={3000}
                     rows={5}
                     value={form.message}
                     onChange={handleChange}
                     placeholder="Welches Bauteil soll geprüft werden? Was ist Ihre Fragestellung?"
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition resize-none"
+                  />
+                </div>
+
+                <div className="absolute -left-[9999px]" aria-hidden="true">
+                  <label htmlFor="contact-website">Website</label>
+                  <input
+                    id="contact-website"
+                    name="website"
+                    type="text"
+                    value={form.website}
+                    onChange={handleChange}
+                    autoComplete="off"
+                    tabIndex={-1}
                   />
                 </div>
 
@@ -269,7 +283,7 @@ export default function KontaktPage() {
                 {errors.privacy && <p className="text-red-500 text-xs -mt-3">{errors.privacy}</p>}
 
                 {errors.submit && (
-                  <p className="text-red-500 text-sm bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 rounded-lg">
+                  <p role="alert" className="text-red-500 text-sm bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 rounded-lg">
                     {errors.submit}
                   </p>
                 )}
@@ -288,24 +302,18 @@ export default function KontaktPage() {
       </main>
 
       {/* Success Modal */}
-      <AnimatePresence>
-        {success && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center px-6"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+      {success && (
+          <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center px-6">
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="contact-success-title"
               className="bg-white dark:bg-[#0f2b3b] text-center px-8 py-12 rounded-2xl shadow-2xl max-w-md w-full border border-gray-200 dark:border-gray-700"
             >
               <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-6">
                 <CheckCircle size={32} className="text-green-500" />
               </div>
-              <h3 className="text-2xl font-bold text-[#08415C] dark:text-white mb-3">Vielen Dank!</h3>
+              <h3 id="contact-success-title" className="text-2xl font-bold text-[#08415C] dark:text-white mb-3">Vielen Dank!</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Ihre Nachricht wurde erfolgreich übermittelt. Wir melden uns in der Regel innerhalb von 24 Stunden bei Ihnen.
               </p>
@@ -315,12 +323,10 @@ export default function KontaktPage() {
               >
                 Fenster schließen
               </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+          </div>
+      )}
 
-      <Footer />
     </>
   )
 }

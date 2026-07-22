@@ -1,11 +1,10 @@
 "use client"
 
-import Navbar from "@components/navigationsbar"
-import Footer from "@components/Footer"
 import { useState } from "react"
 import { Phone, Mail, Clock, CheckCircle, CalendarCheck } from "lucide-react"
 import { createBreadcrumbJsonLd } from "@/lib/seo"
 import { COMPANY_EMAIL, COMPANY_EMAIL_HREF, COMPANY_PHONE, COMPANY_PHONE_HREF } from "@/lib/site"
+import { submitInquiry } from "@/lib/inquiry"
 
 const trustItems = [
   { icon: Clock, text: "Antwort in der Regel innerhalb von 24h" },
@@ -22,9 +21,11 @@ export default function TerminBuchenPage() {
     preferredDate: "",
     message: "",
     privacy: false,
+    website: "",
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [submitError, setSubmitError] = useState("")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target
@@ -34,13 +35,19 @@ export default function TerminBuchenPage() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitError("")
     setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
+
+    try {
+      await submitInquiry({ ...formData, source: "booking" })
       setSubmitted(true)
-    }, 1200)
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Die Terminanfrage konnte nicht gesendet werden.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const breadcrumbSchema = createBreadcrumbJsonLd([
@@ -54,7 +61,6 @@ export default function TerminBuchenPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <Navbar />
       <main className="bg-white dark:bg-[#061b26] text-gray-900 dark:text-white">
         {/* Hero */}
         <section className="bg-gradient-to-br from-[#08415C] to-[#061b26] text-white py-20 px-6">
@@ -141,13 +147,16 @@ export default function TerminBuchenPage() {
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label htmlFor="booking-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Name <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
+                        id="booking-name"
                         name="name"
                         required
+                        autoComplete="name"
+                        maxLength={100}
                         value={formData.name}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition"
@@ -155,12 +164,15 @@ export default function TerminBuchenPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label htmlFor="booking-company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Unternehmen
                       </label>
                       <input
                         type="text"
+                        id="booking-company"
                         name="company"
+                        autoComplete="organization"
+                        maxLength={120}
                         value={formData.company}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition"
@@ -171,13 +183,16 @@ export default function TerminBuchenPage() {
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label htmlFor="booking-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         E-Mail <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="email"
+                        id="booking-email"
                         name="email"
                         required
+                        autoComplete="email"
+                        maxLength={254}
                         value={formData.email}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition"
@@ -185,12 +200,15 @@ export default function TerminBuchenPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label htmlFor="booking-phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Telefon
                       </label>
                       <input
                         type="tel"
+                        id="booking-phone"
                         name="phone"
+                        autoComplete="tel"
+                        maxLength={50}
                         value={formData.phone}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition"
@@ -200,12 +218,14 @@ export default function TerminBuchenPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="booking-preferred-date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Gewünschter Termin / Zeitraum
                     </label>
                     <input
                       type="text"
+                      id="booking-preferred-date"
                       name="preferredDate"
+                      maxLength={100}
                       value={formData.preferredDate}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition"
@@ -214,17 +234,33 @@ export default function TerminBuchenPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="booking-message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Ihr Anliegen <span className="text-red-500">*</span>
                     </label>
                     <textarea
+                      id="booking-message"
                       name="message"
                       required
+                      minLength={10}
+                      maxLength={3000}
                       rows={4}
                       value={formData.message}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#061b26] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#50C9E1] transition resize-none"
                       placeholder="Welches Bauteil soll geprüft werden? Was ist Ihre Fragestellung?"
+                    />
+                  </div>
+
+                  <div className="absolute -left-[9999px]" aria-hidden="true">
+                    <label htmlFor="booking-website">Website</label>
+                    <input
+                      id="booking-website"
+                      name="website"
+                      type="text"
+                      value={formData.website}
+                      onChange={handleChange}
+                      autoComplete="off"
+                      tabIndex={-1}
                     />
                   </div>
 
@@ -248,6 +284,12 @@ export default function TerminBuchenPage() {
                     </label>
                   </div>
 
+                  {submitError && (
+                    <p role="alert" className="text-red-500 text-sm bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 rounded-lg">
+                      {submitError}
+                    </p>
+                  )}
+
                   <button
                     type="submit"
                     disabled={loading}
@@ -261,7 +303,6 @@ export default function TerminBuchenPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }

@@ -1,7 +1,6 @@
-import Navbar from "@components/navigationsbar"
-import Footer from "@components/Footer"
-import Link from "next/link"
-import { ArrowRight, CheckCircle, Microscope, Zap, Eye, Layers, Component, Ruler } from "lucide-react"
+import { CheckCircle, Microscope, Zap, Eye, Layers, Component, Ruler } from "lucide-react"
+import PageCta from "@/app/components/PageCta"
+import PageHero from "@/app/components/PageHero"
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 
 export const metadata = createPageMetadata({
@@ -120,31 +119,14 @@ export default function AnwendungsfaellePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <Navbar />
       <main className="bg-white dark:bg-[#061b26] text-gray-900 dark:text-white">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-[#08415C] to-[#061b26] text-white py-24 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-[#50C9E1]/10 text-[#50C9E1] px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Microscope size={16} />
-              Anwendungsfälle
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Was lässt sich mit CT und Röntgen prüfen?
-            </h1>
-            <p className="text-lg text-gray-200 max-w-3xl mx-auto mb-8">
-              Typische Prüfaufgaben aus der industriellen Praxis – von der Lunkeranalyse bis zum
-              Soll-/Ist-Vergleich. Jedes Beispiel zeigt: Zerstörungsfreie Prüfung lohnt sich früh.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-8 py-4 rounded-full transition-all gap-2"
-            >
-              Anwendungsfall besprechen
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </section>
+        <PageHero
+          eyebrow="03 / Anwendungsfälle"
+          code="APPLICATION / NDT"
+          title="Was lässt sich mit CT und Röntgen prüfen?"
+          description="Typische Prüfaufgaben aus der industriellen Praxis – von der Lunkeranalyse bis zum Soll-/Ist-Vergleich. Jedes Beispiel zeigt: Zerstörungsfreie Prüfung lohnt sich früh."
+          ctaLabel="Anwendungsfall besprechen"
+        />
 
         {/* Use cases */}
         <section className="py-24 px-6">
@@ -217,27 +199,12 @@ export default function AnwendungsfaellePage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="bg-gradient-to-r from-[#08415C] to-[#0C5374] text-white py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ihr Anwendungsfall ist dabei.
-            </h2>
-            <p className="text-gray-200 mb-8 text-lg">
-              Beschreiben Sie uns Ihre Prüfaufgabe – wir klären gemeinsam, welches Verfahren
-              den größten Erkenntnisgewinn bringt.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-8 py-4 rounded-full transition-all gap-2"
-            >
-              Jetzt unverbindlich anfragen
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </section>
+        <PageCta
+          title="Ihr Anwendungsfall ist dabei."
+          description="Beschreiben Sie uns Ihre Prüfaufgabe – wir klären gemeinsam, welches Verfahren den größten Erkenntnisgewinn bringt."
+          label="Jetzt unverbindlich anfragen"
+        />
       </main>
-      <Footer />
     </>
   )
 }

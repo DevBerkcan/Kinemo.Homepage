@@ -1,8 +1,11 @@
-import Navbar from "@components/navigationsbar"
-import Footer from "@components/Footer"
+import { Scan, Radio, SearchX, FlaskConical, GitCompare, FileText, CheckCircle } from "lucide-react"
+import PageCta from "@/app/components/PageCta"
+import PageHero from "@/app/components/PageHero"
+import JsonLd from "@/app/components/JsonLd"
+import { createPageMetadata } from "@/lib/seo"
+import { createBreadcrumbNode, createSchemaGraph, createServiceNode, createWebPageNode } from "@/lib/schema"
+import { regionalPages } from "@/lib/geo-content"
 import Link from "next/link"
-import { Scan, Radio, SearchX, FlaskConical, GitCompare, FileText, ArrowRight, CheckCircle } from "lucide-react"
-import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 
 export const metadata = createPageMetadata({
   title: "Leistungen für industrielle CT, Röntgenanalyse und Fehleranalyse",
@@ -107,65 +110,24 @@ const services = [
 ]
 
 export default function LeistungenPage() {
-  const breadcrumbSchema = createBreadcrumbJsonLd([
-    { name: "Startseite", path: "/" },
-    { name: "Leistungen", path: "/leistungen" },
+  const description = "Industrielle CT, 2D-Röntgenanalyse, Fehleranalyse und entwicklungsbegleitende Bauteilprüfung durch Kinemo."
+  const schema = createSchemaGraph([
+    createWebPageNode({ path: "/leistungen", name: "Leistungen für industrielle CT und Röntgenanalyse", description, about: services.map((service) => service.title) }),
+    createBreadcrumbNode([{ name: "Startseite", path: "/" }, { name: "Leistungen", path: "/leistungen" }], "/leistungen"),
+    ...services.map((service, index) => createServiceNode({ path: "/leistungen", id: `service-${index + 1}`, name: service.title, description: service.description })),
   ])
-
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: "Industrielle CT und Röntgenanalyse",
-    serviceType: [
-      "Industrielle Computertomographie",
-      "2D-Röntgenanalyse",
-      "Fehleranalyse",
-      "Entwicklungsbegleitende Prüfung",
-    ],
-    provider: {
-      "@type": "Organization",
-      name: "Kinemo",
-      url: "https://www.kinemo.de",
-    },
-    areaServed: "DE",
-  }
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
-      <Navbar />
+      <JsonLd data={schema} />
       <main className="bg-white dark:bg-[#061b26] text-gray-900 dark:text-white">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-[#08415C] to-[#061b26] text-white py-24 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-[#50C9E1]/10 text-[#50C9E1] px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Scan size={16} />
-              Unsere Leistungen
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Präzise Analysen für Ihre Produktentwicklung
-            </h1>
-            <p className="text-lg text-gray-200 max-w-3xl mx-auto mb-8">
-              Von der industriellen CT bis zur Entwicklungsbegleitung – Kinemo bietet zerstörungsfreie
-              Analyseleistungen, die Ihnen helfen, verborgene Fehler früh zu erkennen und
-              Entwicklungszeiten zu verkürzen.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-8 py-4 rounded-full transition-all gap-2"
-            >
-              Jetzt Analyse anfragen
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </section>
+        <PageHero
+          eyebrow="01 / Unsere Leistungen"
+          code="SERVICE / NDT"
+          title="Präzise Analysen für Ihre Produktentwicklung"
+          description="Von der industriellen CT bis zur Entwicklungsbegleitung – Kinemo bietet zerstörungsfreie Analyseleistungen, die verborgene Fehler früh erkennen und Entwicklungszeiten verkürzen."
+          ctaLabel="Jetzt Analyse anfragen"
+        />
 
         {/* Services */}
         <section className="py-24 px-6">
@@ -174,7 +136,7 @@ export default function LeistungenPage() {
               const Icon = service.icon
               return (
                 <div
-                  key={index}
+                  key={service.title}
                   className={`flex flex-col ${index % 2 === 1 ? "lg:flex-row-reverse" : "lg:flex-row"} gap-12 items-start`}
                 >
                   <div className="lg:w-1/2">
@@ -206,27 +168,25 @@ export default function LeistungenPage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="bg-gradient-to-r from-[#08415C] to-[#0C5374] text-white py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Nicht sicher, welche Leistung passt?
-            </h2>
-            <p className="text-gray-200 mb-8 text-lg">
-              Sprechen Sie uns an – wir klären gemeinsam, welches Analyseverfahren für Ihre Fragestellung
-              den größten Erkenntnisgewinn bringt.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center bg-[#50C9E1] hover:bg-[#7DDBF3] text-[#08415C] font-semibold px-8 py-4 rounded-full transition-all gap-2"
-            >
-              Jetzt unverbindlich anfragen
-              <ArrowRight size={18} />
-            </Link>
+        <section className="bg-[#f3f7f8] px-6 py-16 dark:bg-[#0f2b3b] md:py-20">
+          <div className="mx-auto max-w-7xl">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#1f9cb1] dark:text-[#50C9E1]">Regionale Erreichbarkeit</p>
+            <div className="mt-4 grid gap-6 lg:grid-cols-[0.45fr_0.55fr] lg:items-end">
+              <h2 className="text-3xl font-bold tracking-[-0.035em] text-[#08415C] dark:text-white">CT- und Röntgenprüfungen über den Standort Wuppertal.</h2>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-300">Kinemo bedient Unternehmen aus dem Bergischen Land und angrenzenden Wirtschaftsregionen. Die Stadtseiten beschreiben das Leistungsgebiet und keine zusätzlichen Niederlassungen.</p>
+            </div>
+            <ul className="mt-8 flex flex-wrap gap-2">
+              {regionalPages.map((region) => <li key={region.slug}><Link href={`/industrielle-ct/${region.slug}`} className="inline-flex min-h-11 items-center border border-[#08415C]/15 bg-white px-4 py-2 text-sm font-medium text-[#08415C] hover:border-[#50C9E1] dark:border-white/15 dark:bg-[#061b26] dark:text-white">{region.city}</Link></li>)}
+            </ul>
           </div>
         </section>
+
+        <PageCta
+          title="Nicht sicher, welche Leistung passt?"
+          description="Wir klären gemeinsam, welches Analyseverfahren für Ihre Fragestellung den größten Erkenntnisgewinn bringt."
+          label="Jetzt unverbindlich anfragen"
+        />
       </main>
-      <Footer />
     </>
   )
 }

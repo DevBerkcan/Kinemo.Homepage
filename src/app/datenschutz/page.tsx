@@ -1,6 +1,4 @@
-import React from "react";
-import Footer from "../components/Footer";
-import Navbar from "../components/navigationsbar";
+import DocumentPage from "@/app/components/DocumentPage";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
@@ -12,12 +10,12 @@ export const metadata = createPageMetadata({
 
 export default function Datenschutz() {
   return (
-    <>
-    <Navbar/>
-    <main className="max-w-3xl mx-auto px-4 py-16 text-[#333333] font-inter">
-      <h1 className="text-4xl font-bold text-[#08415C] mb-8">Datenschutzerklärung</h1>
-
-      <div className="prose prose-neutral prose-headings:text-[#08415C] prose-a:text-[#08415C] prose-a:underline max-w-none">
+    <DocumentPage
+      eyebrow="Datenschutz"
+      title="Datenschutzerklärung"
+      description="Informationen zur Verarbeitung personenbezogener Daten und zu Ihren Rechten."
+    >
+      <div className="prose prose-neutral max-w-none prose-headings:tracking-[-0.02em] prose-headings:text-[#08415C] prose-a:text-[#08415C] prose-a:underline dark:prose-invert dark:prose-headings:text-white dark:prose-a:text-[#50C9E1]">
         <h2>1) Einleitung und Kontaktdaten des Verantwortlichen</h2>
         <p>1.1 Wir freuen uns, dass Sie unsere Website besuchen und bedanken uns für Ihr Interesse...</p>
         <p>1.2 Verantwortlicher ist Sercan Atesoglu, KINEMO GmbH, Heinz-Fangman-Str. 2, 42287 Wuppertal, Deutschland, Tel.: +49 1520 5765010, E-Mail: sercan.atesoglu@kinemo.de.</p>
@@ -27,8 +25,8 @@ export default function Datenschutz() {
         <p>2.1 Server-Logfiles, IP-Adresse (anonymisiert), verwendeter Browser, etc...</p>
         <p>2.2 SSL-/TLS-Verschlüsselung ist aktiv.</p>
 
-        <h2>3) Cookies</h2>
-        <p>Wir verwenden Session- und persistente Cookies... (Einwilligung Art. 6 Abs. 1 lit. a DSGVO)</p>
+        <h2>3) Cookies und Einwilligung</h2>
+        <p>Technisch notwendige Funktionen werden ohne Einwilligung bereitgestellt. Optionale Analyse-Dienste werden erst geladen, nachdem Sie ausdrücklich zugestimmt haben. Ihre Auswahl wird lokal in Ihrem Browser gespeichert und kann über „Datenschutz-Einstellungen“ im Footer jederzeit geändert werden.</p>
 
         <h2>4) Kontaktaufnahme</h2>
         <h3>4.1 Calendly</h3>
@@ -47,8 +45,9 @@ export default function Datenschutz() {
         <h2>6) Datenverarbeitung zur Bestellabwicklung</h2>
         <p>Weitergabe an Versanddienstleister und Zahlungsanbieter gemäß Vertrag.</p>
 
-        <h2>7) Retargeting & Tracking</h2>
-        <p>Meta Pixel (mit erweitertem Abgleich) – nur bei Einwilligung aktiv.</p>
+        <h2>7) Reichweitenanalyse mit Microsoft Clarity</h2>
+        <p>Nach Ihrer Einwilligung verwenden wir Microsoft Clarity, einen Analysedienst der Microsoft Corporation. Der Dienst hilft uns zu verstehen, wie Besucher unsere Website nutzen. Dabei können Nutzungsdaten, Geräteinformationen und gekürzte beziehungsweise pseudonymisierte Kennungen verarbeitet werden.</p>
+        <p>Die Verarbeitung erfolgt ausschließlich auf Grundlage Ihrer Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO. Ohne Zustimmung wird Microsoft Clarity nicht geladen. Sie können Ihre Einwilligung jederzeit über „Datenschutz-Einstellungen“ im Footer mit Wirkung für die Zukunft widerrufen.</p>
 
         <h2>8) Seitenfunktionalitäten</h2>
         <p>Instagram, LinkedIn, Pinterest, Xing, YouTube Plugins – 2-Klick-Lösung & Einwilligung notwendig.</p>
@@ -61,9 +60,6 @@ export default function Datenschutz() {
 
         <p className="text-sm mt-6 italic">Diese Datenschutzerklärung wurde mit Unterstützung der IT-Recht Kanzlei München erstellt. © 2024</p>
       </div>
-    </main>
-
-<Footer/>
-</>
+    </DocumentPage>
   );
 }
